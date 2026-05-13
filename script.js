@@ -1,5 +1,23 @@
 // Seleciona o formulário
 const formAvaliacao = document.getElementById("formAvaliacao");
+const saborSelect = document.querySelector('select[name="sabor"]');
+const root = document.documentElement;
+
+// Função para mudar tema por sabor
+function mudarTemaPorSabor(sabor) {
+  if (sabor) {
+    root.setAttribute("data-sabor", sabor);
+  } else {
+    root.removeAttribute("data-sabor");
+  }
+}
+
+// Adiciona listener para mudança de sabor
+if (saborSelect) {
+  saborSelect.addEventListener("change", (e) => {
+    mudarTemaPorSabor(e.target.value);
+  });
+}
 
 // Adiciona listener para o envio do formulário
 formAvaliacao.addEventListener("submit", async (e) => {
@@ -21,6 +39,7 @@ formAvaliacao.addEventListener("submit", async (e) => {
     if (response.ok) {
       alert("Avaliação enviada com sucesso!");
       formAvaliacao.reset(); // Limpa o formulário
+      root.removeAttribute("data-sabor"); // Remove o tema customizado
     } else {
       alert("Erro ao enviar avaliação: " + data.message);
     }
