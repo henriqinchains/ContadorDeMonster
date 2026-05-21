@@ -33,6 +33,8 @@ formAvaliacao.addEventListener("submit", async (e) => {
       body: formData,
     });
 
+//xereca
+    
     const data = await response.json();
 
     // Verifica se a requisição foi bem-sucedida
