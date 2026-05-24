@@ -1,0 +1,15 @@
+GET http://localhost:3001/users
+Content-Type: application/json
+
+###
+POST http://localhost:3001/users/login
+Content-Type: application/json
+
+###
+GET http://localhost:3001/health
+Content-Type: application/json
+
+{
+  "login": "bysa",
+  "password": "12345678"
+}

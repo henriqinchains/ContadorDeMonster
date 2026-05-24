@@ -2,7 +2,20 @@
 const formAvaliacao = document.getElementById("formAvaliacao");
 const saborSelect = document.querySelector('select[name="sabor"]');
 const root = document.documentElement;
-const btnSubmit = document.getElementById('btnSubmit');
+const btnSubmit = document.getElementById("btnSubmit");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    // Se não houver token, redireciona para login
+    window.location.href = "login/login.html";
+    return;
+  }
+
+  // Se houver token, pode carregar o restante da página normalmente
+  console.log("Usuário autenticado:", localStorage.getItem("loggedUser"));
+});
 
 let enviando = false;
 
@@ -26,27 +39,26 @@ if (saborSelect) {
 formAvaliacao.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-if (enviando) return;
+  if (enviando) return;
 
   enviando = true;
   btnSubmit.disabled = true;
 
   // Cria um FormData com os dados do formulário
   const formData = new FormData(formAvaliacao);
-  
-  
-  
-  
+
   try {
     // Envia o POST para o backend
-    const response = await fetch('https://monster-reviews-api.onrender.com/api/avaliacoes', {
-      method: "POST",
-      body: formData,
-    });
-    
-    
+    const response = await fetch(
+      "https://monster-reviews-api.onrender.com/api/avaliacoes",
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+
     //xereca
-    
+
     const data = await response.json();
 
     // Verifica se a requisição foi bem-sucedida
@@ -60,11 +72,9 @@ if (enviando) return;
   } catch (error) {
     console.error("Erro:", error);
     alert("Erro ao enviar avaliação. Tente novamente.");
-  }
-  finally {
+  } finally {
     // reabilita o botão
-    enviando = false
+    enviando = false;
     btnSubmit.disabled = false;
   }
-
 });

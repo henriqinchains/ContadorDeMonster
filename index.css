@@ -3,11 +3,11 @@
   --card: #12172e;
   --text: #f8fafc;
   --secondary: #cbd5e1;
-  --accent: #00d9ff;
-  --accent-strong: #00ffff;
-  --accent-secondary: #ff006e;
-  --border: rgba(255, 255, 255, 0.08);
-  --glow: rgba(0, 217, 255, 0.15);
+  --accent: #00ff2a;
+  --accent-strong: #00ff4c;
+  --accent-secondary: #000000;
+  --border: rgba(39, 39, 39, 0.08);
+  --glow: rgba(0, 82, 11, 0.15);
 }
 
 /* Temas por Sabor */
