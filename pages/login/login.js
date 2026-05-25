@@ -43,6 +43,8 @@ function initLogin() {
     }
 
     button.disabled = true;
+    message.style.display = "block";
+    message.style.fontFamily = "Nova Square, sans-serif";
     button.textContent = "Entrando...";
     message.textContent = "Validando suas credenciais...";
     message.style.color = "#adadad";
@@ -68,9 +70,9 @@ function initLogin() {
       localStorage.setItem("loggedUser", data.login);
 
       message.style.display = "block";
-      message.textContent = `Login realizado com sucesso, ${data.login}!`;
       message.style.color = "#adadad";
       message.style.fontFamily = "Nova Square, sans-serif";
+      message.textContent = `Login realizado com sucesso, ${data.login}!`;
       form.reset();
 
       window.setTimeout(() => {
