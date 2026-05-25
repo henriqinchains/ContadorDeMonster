@@ -1,13 +1,3 @@
-if (!token) {
-    // Se não houver token, redireciona para login
-    window.location.href = "pages/login/login.html";
-    return;
-  }
-else {
-  console.log("Usuário autenticado:", localStorage.getItem("loggedUser"));
-});
-}
-
 function toggleDropdown() {
     document.getElementById('navUser').classList.toggle('open');
   }
