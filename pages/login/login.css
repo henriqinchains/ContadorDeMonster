@@ -10,7 +10,7 @@
   position: absolute;
   top: -140px;
   display: block;
-  background-image: url("src/pngegg.png");
+  background-image: url("../../src//img//pngegg.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -61,10 +61,7 @@ body {
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top, rgba(1, 27, 0, 0.753), transparent 26%),
-    linear-gradient(135deg, #000000, #000a04, #001104 55%, #010803);
-  color: #f8fafc;
+  background: #000000;
 }
 
 .page-shell {
@@ -82,7 +79,7 @@ body {
   border-radius: 24px;
   background: rgba(0, 0, 0, 0.205);
   border: 1px solid rgba(148, 184, 150, 0.24);
-  box-shadow: 0 24px 80px rgba(5, 14, 5, 0.45);
+  box-shadow: 0px 2px 80px rgba(9, 77, 9, 0.45);
   backdrop-filter: blur(10px);
 }
 

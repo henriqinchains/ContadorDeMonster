@@ -9,13 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!token) {
     // Se não houver token, redireciona para login
-    window.location.href = "login/login.html";
+    window.location.href = "pages/login/login.html";
     return;
   }
-
-  // Se houver token, pode carregar o restante da página normalmente
+else {
+    window.location.href = "pages/feed/feed.html";
+// Se houver token, pode carregar o restante da página normalmente
   console.log("Usuário autenticado:", localStorage.getItem("loggedUser"));
 });
+}
+
+  
 
 let enviando = false;
 
