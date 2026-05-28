@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contador de Monster</title>
+ 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="feed.css" />
@@ -26,8 +29,8 @@
       <!-- User dropdown -->
       <div class="nav-user" id="navUser">
         <div class="user-trigger" onclick="toggleDropdown()">
-          <div class="user-avatar">JD</div>
-          <span class="user-name">João D.</span>
+          <div class="user-avatar"></div>
+          <span id="loggedUser"></span>
           <svg class="chevron" viewBox="0 0 24 24">
             <polyline points="6 9 12 15 18 9" />
           </svg>
@@ -36,7 +39,7 @@
         <div class="user-dropdown">
           <div class="dropdown-header">
             <strong></strong>
-            <span id="loggedUser"></span>
+            <span id="loggedUserEmail"></span>
           </div>
           <div class="dropdown-item">
             <svg
@@ -217,6 +220,7 @@
     <script>
       document.getElementById("loggedUser").textContent =
         localStorage.getItem("loggedUser");
+        
     </script>
   </body>
 </html>
