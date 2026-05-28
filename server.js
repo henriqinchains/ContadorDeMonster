@@ -241,7 +241,7 @@ app.post('/api/auth/login', async (req, res) => {
         const { login, password, email } = req.body;
 
         // Agora o 'Usuario' existe aqui em cima e o Node vai achar!
-        const emailEncontrado = await Usuario.findOne({ email: email })
+        const emailEncontrado = await Usuario.findOne({ email: login })
         const usuarioEncontrado = await Usuario.findOne({ nome: login });
         if (!usuarioEncontrado || !emailEncontrado) {
             return res.status(400).json({ erro: 'Usuário ou senha incorretos.' });
