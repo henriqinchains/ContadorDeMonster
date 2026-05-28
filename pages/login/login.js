@@ -66,6 +66,7 @@ function initLogin() {
 
     const usuario = document.getElementById("usuario-login").value.trim();
     const senha = document.getElementById("senha-login").value;
+    const email = document.getElementByClass("usuario-email").value.trim();
 
     if (!usuario || !senha) {
       message.style.display = "block";
@@ -91,7 +92,7 @@ function initLogin() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ login: usuario, password: senha, email: usuario}),
+          body: JSON.stringify({ login: usuario, password: senha, login: email}),
         },
       );
 
