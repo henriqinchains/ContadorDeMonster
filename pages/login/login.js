@@ -91,7 +91,7 @@ function initLogin() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ login: usuario, password: senha }),
+          body: JSON.stringify({ login: usuario, password: senha, email: usuario}),
         },
       );
 
