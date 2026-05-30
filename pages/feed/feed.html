@@ -38,8 +38,8 @@
 
         <div class="user-dropdown">
           <div class="dropdown-header">
-            <strong></strong>
-            <span id="loggedUserEmail"></span>
+            <strong id="loggedUserEmail"></strong>
+            <span></span>
           </div>
           <div class="dropdown-item">
             <svg
@@ -221,6 +221,7 @@
       document.getElementById("loggedUser").textContent =
         localStorage.getItem("loggedUser");
         
+        document.getElementById("loggedUserEmail").textContent = localStorage.getItem("loggedEmail")
     </script>
   </body>
 </html>
