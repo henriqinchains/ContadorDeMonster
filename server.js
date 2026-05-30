@@ -243,14 +243,14 @@ app.post('/api/auth/login', async (req, res) => {
         // Agora o 'Usuario' existe aqui em cima e o Node vai achar!
         const emailEncontrado = await Usuario.findOne({ email: email });
         const usuarioEncontrado = await Usuario.findOne({ nome: login });
-        if (!usuarioEncontrado && !emailEncontrado) {
+        if (!usuarioEncontrado || !emailEncontrado) {
             return res.status(400).json({ erro: 'Usuário ou senha incorretos.' });
         }
 
         const senhaValidaLogin = await bcrypt.compare(password, usuarioEncontrado.senha);
         const senhaValidaEmail = await bcrypt.compare(password, emailEncontrado.senha);
         
-        if (!senhaValidaLogin && !senhaValidaEmail) {
+        if (!senhaValidaLogin || !senhaValidaEmail) {
             return res.status(400).json({ erro: 'Usuário ou senha incorretos.' });
         }
         
