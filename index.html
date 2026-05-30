@@ -22,11 +22,7 @@
             <div class="grid grid-two">
               <label>
                 O cabra
-                <select name="sujeito" required>
-                  <option value="">Selecione o caboclo</option>
-                  <option value="Meira">Meira</option>
-                  <option value="Francis">Francis</option>
-                </select>
+                <input type="text" id="sujeito" name="sujeito" readonly>
               </label>
 
               <label>
@@ -119,6 +115,7 @@
               window.location.href = "pages\\login\\login.html";
             });
         </script>
+        <script>const usuario = localStorage.getItem("loggedUser"); document.getElementById("sujeito").textContent = usuario; document.getElementById("sujeito").value = usuario</script>
       </main>
     </body>
   </html>
