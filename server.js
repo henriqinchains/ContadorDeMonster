@@ -238,7 +238,7 @@ return res.status(201).json({
 // ROTA DE LOGIN
 app.post('/api/auth/login', async (req, res) => {
     try {
-        const { login, password, email } = req.body;
+        const { login, password} = req.body;
 
         // Agora o 'Usuario' existe aqui em cima e o Node vai achar!
         const usuarioEncontrado = await Usuario.findOne({ nome: login });
