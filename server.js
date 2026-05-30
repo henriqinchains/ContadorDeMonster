@@ -238,15 +238,20 @@ return res.status(201).json({
 // ROTA DE LOGIN
 app.post('/api/auth/login', async (req, res) => {
     try {
-        const {login, password, email} = req.body;
-        // Agora o 'Usuario' existe aqui em cima e o Node vai achar!
-        const usuarioEncontradoLogin = await Usuario.findOne({nome:login});
-        const usuarioEncontradoEmail = await Usuario.findOne({email:email});
+        const {login, password} = req.body;
         
-        if (!usuarioEncontradoLogin && !usuarioEncontradoEmail) {
+        // Faz uma única busca: procura alguém que tenha o nome = login OU email = login
+        const usuarioEncontrado = await Usuario.findOne({
+            $or: [
+                { nome: login },
+                { email: login }
+            ]
+        });
+        
+        if (!usuarioEncontrado) {
             return res.status(400).json({ erro: 'Usuário ou senha incorretos.' });
         }
-
+        
         const senhaValidaLogin = await bcrypt.compare(password, usuarioEncontrado.senha);
         
         if (!senhaValidaLogin) {
