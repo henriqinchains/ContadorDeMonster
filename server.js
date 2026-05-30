@@ -238,10 +238,12 @@ return res.status(201).json({
 // ROTA DE LOGIN
 app.post('/api/auth/login', async (req, res) => {
     try {
-        const {login, password} = req.body;
+        const {login, password, email} = req.body;
         // Agora o 'Usuario' existe aqui em cima e o Node vai achar!
-        const usuarioEncontrado = await Usuario.findOne({nome:login});
-        if (!usuarioEncontrado) {
+        const usuarioEncontradoLogin = await Usuario.findOne({nome:login});
+        const usuarioEncontradoEmail = await Usuario.findOne({email:email});
+        
+        if (!usuarioEncontradoLogin && !usuarioEncontradoEmail) {
             return res.status(400).json({ erro: 'Usuário ou senha incorretos.' });
         }
 
