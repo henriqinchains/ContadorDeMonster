@@ -103,6 +103,7 @@ function initLogin() {
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("loggedUser", data.login);
         localStorage.setItem("loggedEmail", data.email);
+        localStorage.setItem("userRole", data.cargo);
 
         message.style.color = "#00ff66";
         message.textContent = `Login realizado com sucesso, ${data.login}!`;
