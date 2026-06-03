@@ -124,39 +124,46 @@ async function carregarFeed() {
       postArticle.className = "post-card";
 
       postArticle.innerHTML = `
-                <div class="post-head">
-                  <div class="post-avatar" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">
-                    ${post.sujeito.substring(0, 2).toUpperCase()}
-                  </div>
-                  <div class="post-meta">
-                    <strong>${post.sujeito}</strong>
-                    <span>${new Date(post.createdAt).toLocaleDateString("pt-BR")} · Público</span>
-                  </div>
-                  <button class="post-options">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
-                  </button>
-                </div>
-                
-                <div class="post-image">
-                  <img src="${post.foto_url}" alt="Foto do Monster" style="width:100%; max-height:400px; object-fit:contain; border-radius:4px;">
-                </div>
-                
-                <div class="post-info">
-                  <div class="info-item"><span class="info-label">Sabor</span><span class="info-value">${post.sabor}</span></div>
-                  <div class="info-item"><span class="info-label">Valor</span><span class="info-value">R$ ${Number(post.valor).toFixed(2).replace(".", ",")}</span></div>
-                  <div class="info-item"><span class="info-label">Nota</span><span class="info-value">${Number(post.nota).toFixed(1)} <span class="nota-stars">${estrelas}</span></span></div>
-                  <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
-                </div>
-                
-                <div class="post-desc">${post.review || "Sem descrição."}</div>
-                
-                <div class="post-footer">
-                  <button class="post-action">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    0
-                  </button>
-                </div>
-            `;
+    <div class="post-head">
+      <div class="post-avatar" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">
+        ${post.sujeito.substring(0, 2).toUpperCase()}
+      </div>
+      <div class="post-meta">
+        <strong>${post.sujeito}</strong>
+        <span>${new Date(post.createdAt).toLocaleDateString("pt-BR")} · Público</span>
+      </div>
+    </div>
+    
+    <div class="post-image">
+      <img src="${post.foto_url}" alt="Foto do Monster" style="width:100%; max-height:400px; object-fit:contain; border-radius:4px;">
+    </div>
+    
+    <div class="post-info">
+      <div class="info-item"><span class="info-label">Sabor</span><span class="info-value">${post.sabor}</span></div>
+      <div class="info-item"><span class="info-label">Valor</span><span class="info-value">R$ ${Number(post.valor).toFixed(2).replace(".", ",")}</span></div>
+      <div class="info-item"><span class="info-label">Nota</span><span class="info-value">${Number(post.nota).toFixed(1)} <span class="nota-stars">${estrelas}</span></span></div>
+      <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
+    </div>
+    
+    <div class="post-desc">${post.review || "Sem descrição."}</div>
+    
+    <div class="post-footer" style="display: flex; justify-content: space-between; align-items: center;">
+      <button class="post-action">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        0
+      </button>
+
+      ${(post.sujeito === usuarioLogado || cargoUsuario === 'admin') 
+          ? `<button class="post-action" onclick="deletarPost('${post._id}')" style="color: #ff4d4d; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold;">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+               Excluir
+             </button>` 
+          : ''
+      }
+    </div>
+`;
+      
+      
       feedContainer.appendChild(postArticle);
     });
   } catch (erro) {
