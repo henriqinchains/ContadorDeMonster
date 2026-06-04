@@ -174,6 +174,26 @@ async function carregarFeed() {
   }
 }
 
+async function deletarPost(id) {
+    try {
+        const resposta = await fetch(`https://monster-reviews-api.onrender.com/api/posts/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': localStorage.getItem('authToken')
+            }
+        });
+        if (resposta.ok) {
+            alert("Post excluído com sucesso!");
+            location.reload();
+        } else {
+            const dados = await resposta.json();
+            alert(dados.erro || "Erro ao deletar.");
+        }
+    } catch (erro) {
+        console.error("Erro no fetch:", erro);
+    }
+}
+
 async function carregarRanking() {
   const container = document.getElementById("ranking-container");
   if (!container) return;
