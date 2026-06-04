@@ -96,41 +96,54 @@ function toggleTag(el) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. MAPEANDO TUDO
   const btnAbrirModal = document.getElementById("btn-abrir-registro");
   const modalContainer = document.getElementById("modal-container");
+  
   const formAvaliacao = document.getElementById("formAvaliacao");
-  const btnFecharModal = document.getElementById("btn-fechar-modal");
+  const btnSair = document.getElementById("btnSair");
   const btnSubmit = document.getElementById("btnSubmit");
+  const btnFecharModal = document.getElementById("btn-fechar-modal"); // <-- O FILHO DA PUTA AQUI
+  
   const inputSujeito = document.getElementById("sujeito");
   const selectSabor = document.querySelector('select[name="sabor"]');
-  const usuarioLogado = localStorage.getItem("loggedUser") || "Desconhecido";
 
+  // 2. PREENCHER NOME DO USUÁRIO
+  const usuarioLogado = localStorage.getItem("loggedUser") || "Desconhecido";
   if (inputSujeito) {
     inputSujeito.value = usuarioLogado;
   }
+
+  // 3. ABRIR MODAL
   if (btnAbrirModal) {
     btnAbrirModal.addEventListener("click", (e) => {
       e.preventDefault();
       modalContainer.style.display = "flex";
-      selectSabor.focus();
+      if (selectSabor) selectSabor.focus(); 
     });
   }
+
+  // 4. FUNÇÃO PARA FECHAR E LIMPAR TUDO
+  const fecharModal = () => {
+    modalContainer.style.display = "none";
+    if (formAvaliacao) formAvaliacao.reset();
+    if (inputSujeito) inputSujeito.value = usuarioLogado; // Devolve o nome
+  };
+
+  // 5. ATRIBUINDO A FUNÇÃO DE FECHAR
+  
   if (btnFecharModal) {
-    btnFecharModal.addEventListener("click", () => {
-      modalContainer.style.display = "none"; // Esconde o modal
-      formAvaliacao.reset(); // Limpa os campos pra próxima vez
-      if (inputSujeito) {
-        inputSujeito.value = localStorage.getItem("loggedUser") || "Desconhecido"; 
-      }
-    });
+    btnFecharModal.addEventListener("click", fecharModal);
   }
+
+  // 6. FECHAR CLICANDO FORA DA TELA
   window.addEventListener("click", (e) => {
     if (e.target === modalContainer) {
-      modalContainer.style.display = "none";
+      fecharModal();
     }
   });
-
-  // 6. ENVIAR OS DADOS PRO BACK-END (FETCH)
+  
+  // 7. ENVIAR OS DADOS PRO BACK-END (FETCH)
   if (formAvaliacao) {
     formAvaliacao.addEventListener("submit", async (e) => {
       e.preventDefault();
