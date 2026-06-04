@@ -21,6 +21,7 @@
       <div class="nav-links">
         <a href="#" class="active">Feed</a>
         <a href="#">Estatísticas</a>
+        <a href="#">Torneio (em breve)</a>
       </div>
 
       <div class="nav-user" id="navUser">
@@ -139,73 +140,99 @@
           </div>
         </div>
 
-        <div class="filter-form">
-          <div class="filter-header">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-            </svg>
-            <h3>Filtros</h3>
-          </div>
-          <div class="filter-body">
-            <div class="field">
-              <label>Buscar</label>
-              <input type="text" placeholder="Sabor, marca…" />
-            </div>
-            <div class="field">
-              <label>Categoria</label>
-              <div class="select-wrap">
-                <select>
-                  <option>Todas as categorias</option>
-                  <option>Pilsen</option>
-                  <option>IPA</option>
-                  <option>Weiss</option>
-                  <option>Dark Lager</option>
-                  <option>Zero Álcool</option>
-                  <option>Seltzer</option>
-                </select>
-              </div>
-            </div>
-            <div class="field">
-              <label>Período</label>
-              <div class="date-row">
-                <input type="date" />
-                <input type="date" />
-              </div>
-            </div>
-            <div class="field">
-              <label>Valeu a pena?</label>
-              <div class="tag-group" id="tagGroup">
-                <span class="tag active" onclick="toggleTag(this)">Todos</span>
-                <span class="tag" onclick="toggleTag(this)">✓ Sim</span>
-                <span class="tag" onclick="toggleTag(this)">✗ Não</span>
-              </div>
-            </div>
-            <div class="field">
-              <label>Ordenar por</label>
-              <div class="select-wrap">
-                <select>
-                  <option>Mais recentes</option>
-                  <option>Melhor nota</option>
-                  <option>Menor preço</option>
-                  <option>Mais curtidos</option>
-                </select>
-              </div>
-            </div>
-            <div class="btn-group">
-              <button class="btn btn-ghost">Limpar</button>
-              <button class="btn btn-primary">Aplicar</button>
-            </div>
-          </div>
+      <div class="filter-form">
+        <div class="filter-header">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+          </svg>
+          <h3>Filtros</h3>
         </div>
+      
+      <div class="filter-body">
+    
+        <!-- Busca -->
+        <div class="field">
+  <div class="label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <label for="filtroBusca" style="margin-bottom: 0;">Buscar</label>
+    
+    <label for="checkMeusPosts" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--accent); font-size: 0.85rem; margin-bottom: 0; font-weight: 600;">
+      <input type="checkbox" id="checkMeusPosts" style="width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: var(--accent-strong);" />
+      Só as minhas latas
+    </label>
+  </div>
+  
+  <input type="text" id="filtroBusca" list="listaUsuarios" placeholder="Avaliador, palavra-chave..." />
+  
+  <datalist id="listaUsuarios">
+    </datalist>
+</div>
+
+        <!-- Sabor do Monster -->
+        <div class="field">
+          <label for="filtroSabor">Sabor</label>
+        <div class="select-wrap">
+          <select id="filtroSabor">
+            <option value="">Todos os sabores</option>
+            <option value="branco">Branco</option>
+            <option value="mangoLoco">Mango Loco</option>
+            <option value="pacificPunch">Pacific Punch</option>
+            <option value="peachyKeen">Peachy Keen</option>
+            <option value="rioPunch">Rio Punch</option>
+            <option value="ultraFiestaMango">Ultra Fiesta Mango</option>
+            <option value="ultraStrawberry">Ultra Strawberry Dreams</option>
+            <option value="ultraViolet">Ultra Violet</option>
+            <option value="watermelon">Watermelon</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+    </div>
+
+    <!-- Filtro de Nota (Substituindo o Período) -->
+    <div class="field">
+      <label for="filtroNota">Nota Mínima</label>
+      <input type="number" id="filtroNota" min="0" max="10" step="0.5" placeholder="Ex: 8.0" />
+    </div>
+
+    <!-- Valeu a Pena? (Tags) -->
+    <div class="field">
+      <label>Valeu a pena?</label>
+      <div class="tag-group" id="tagGroupValeu">
+        <!-- Adicionado data-value para facilitar a captura no JS -->
+        <span class="tag active" data-value="todos" onclick="toggleTag(this)">Todos</span>
+        <span class="tag" data-value="true" onclick="toggleTag(this)">✓ Sim</span>
+        <span class="tag" data-value="false" onclick="toggleTag(this)">✗ Não</span>
       </div>
     </div>
+
+    <!-- Ordenação -->
+    <div class="field">
+      <label for="filtroOrdem">Ordenar por</label>
+      <div class="select-wrap">
+        <select id="filtroOrdem">
+          <option value="recentes">Mais recentes</option>
+          <option value="antigos">Mais antigos</option>
+          <option value="maior_nota">Maior nota</option>
+          <option value="menor_nota">Menor nota</option>
+          <option value="menor_preco">Menor preço</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-ghost" id="btnLimparFiltros">Limpar</button>
+      <button type="button" class="btn btn-primary" id="btnAplicarFiltros">Aplicar</button>
+    </div>
+    
+  </div>
+</div>
     
     <div id="modal-container" class="modal-overlay" style="display: none;">
     <div class="modal-card">
