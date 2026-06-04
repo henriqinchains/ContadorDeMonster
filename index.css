@@ -7,6 +7,13 @@
   --text-main: #c5c6c7;
   --text-muted: #8b9bb4;
   --border-color: #45a29e;
+  --bg: #0a0e27;
+  --card: #12172e;
+  --text: #f8fafc;
+  --secondary: #cbd5e1;
+  --accent: #00ff2a;
+  --accent-strong: #00ff4c;
+  --glow: rgba(0, 82, 11, 0.15);
 }
 
 * {
