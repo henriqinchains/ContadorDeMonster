@@ -76,28 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tab.classList.add("active");
     });
   });
-});
 
-function toggleDropdown() {
-  const nu = document.getElementById("navUser");
-  if (nu) nu.classList.toggle("open");
-}
-
-document.addEventListener("click", (e) => {
-  const nu = document.getElementById("navUser");
-  if (nu && !nu.contains(e.target)) {
-    nu.classList.remove("open");
-  }
-});
-
-function toggleTag(el) {
-  document
-    .querySelectorAll("#tagGroup .tag")
-    .forEach((t) => t.classList.remove("active"));
-  el.classList.add("active");
-}
-
-document.addEventListener("DOMContentLoaded", () => {
   // 1. MAPEANDO TUDO
   const btnAbrirModal = document.getElementById("btn-abrir-registro");
   const modalContainer = document.getElementById("modal-container");
@@ -179,6 +158,95 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSubmit.disabled = false;
       }
     });
+  }
+
+  const btnAplicar = document.getElementById("btnAplicarFiltros");
+  const btnLimpar = document.getElementById("btnLimparFiltros");
+
+  // AÇÃO DO BOTÃO APLICAR
+  if (btnAplicar) {
+    btnAplicar.addEventListener("click", () => {
+      // 1. Pegando o que o usuário escolheu
+      const busca = document.getElementById("filtroBusca").value.toLowerCase();
+      const apenasMinhas = document.getElementById("checkMeusPosts").checked;
+      const sabor = document.getElementById("filtroSabor").value;
+      const notaMinima = parseFloat(document.getElementById("filtroNota").value) || 0;
+      const ordem = document.getElementById("filtroOrdem").value;
+      const usuarioLogado = localStorage.getItem("loggedUser");
+      
+      const tagAtiva = document.querySelector("#tagGroupValeu .tag.active");
+      const valeuFiltro = tagAtiva ? tagAtiva.getAttribute("data-value") : "todos";
+
+      // 2. Passando a peneira nos posts
+      let postsFiltrados = todasAvaliacoes.filter(post => {
+        
+        // Regra 1: Só as minhas
+        if (apenasMinhas && post.sujeito !== usuarioLogado) return false;
+
+        // Regra 2: Busca por nome ou review
+        const textoPost = `${post.sujeito} ${post.review || ""}`.toLowerCase();
+        if (busca && !textoPost.includes(busca)) return false;
+
+        // Regra 3: Sabor Exato
+        if (sabor && post.sabor !== sabor) return false;
+
+        // Regra 4: Nota Mínima
+        if (post.nota < notaMinima) return false;
+
+        // Regra 5: Valeu a Pena?
+        if (valeuFiltro !== "todos") {
+          const ehTrue = valeuFiltro === "true";
+          if (post.valeu_a_pena !== ehTrue) return false;
+        }
+
+        return true; // Passou em todas as regras, continua na lista!
+      });
+
+      // 3. Ordenando a lista que sobrou
+      postsFiltrados.sort((a, b) => {
+        if (ordem === "recentes") return new Date(b.createdAt) - new Date(a.createdAt);
+        if (ordem === "antigos") return new Date(a.createdAt) - new Date(b.createdAt);
+        if (ordem === "maior_nota") return b.nota - a.nota;
+        if (ordem === "menor_nota") return a.nota - b.nota;
+        if (ordem === "menor_preco") return a.valor - b.valor;
+        return 0;
+      });
+
+      // 4. Manda desenhar a nova lista na tela
+      renderizarPosts(postsFiltrados); 
+    });
+  }
+
+  // AÇÃO DO BOTÃO LIMPAR
+  if (btnLimpar) {
+    btnLimpar.addEventListener("click", () => {
+      // Zera tudo
+      document.getElementById("filtroBusca").value = "";
+      document.getElementById("checkMeusPosts").checked = false;
+      document.getElementById("filtroSabor").value = "";
+      document.getElementById("filtroNota").value = "";
+      document.getElementById("filtroOrdem").value = "recentes";
+
+      document.querySelectorAll("#tagGroupValeu .tag").forEach(t => t.classList.remove("active"));
+      const tagTodos = document.querySelector("#tagGroupValeu .tag[data-value='todos']");
+      if(tagTodos) tagTodos.classList.add("active");
+
+      // Devolve a timeline inteira e original
+      renderizarPosts(todasAvaliacoes);
+    });
+  }
+  
+});
+
+function toggleDropdown() {
+  const nu = document.getElementById("navUser");
+  if (nu) nu.classList.toggle("open");
+}
+
+document.addEventListener("click", (e) => {
+  const nu = document.getElementById("navUser");
+  if (nu && !nu.contains(e.target)) {
+    nu.classList.remove("open");
   }
 });
 
@@ -351,84 +419,3 @@ window.toggleTag = function(elemento) {
   // Coloca só no que o usuário clicou
   elemento.classList.add("active");
 };
-
-// ==========================================
-// MOTOR DE FILTRAGEM E ORDENAÇÃO
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-  const btnAplicar = document.getElementById("btnAplicarFiltros");
-  const btnLimpar = document.getElementById("btnLimparFiltros");
-
-  // AÇÃO DO BOTÃO APLICAR
-  if (btnAplicar) {
-    btnAplicar.addEventListener("click", () => {
-      // 1. Pegando o que o usuário escolheu
-      const busca = document.getElementById("filtroBusca").value.toLowerCase();
-      const apenasMinhas = document.getElementById("checkMeusPosts").checked;
-      const sabor = document.getElementById("filtroSabor").value;
-      const notaMinima = parseFloat(document.getElementById("filtroNota").value) || 0;
-      const ordem = document.getElementById("filtroOrdem").value;
-      const usuarioLogado = localStorage.getItem("loggedUser");
-      
-      const tagAtiva = document.querySelector("#tagGroupValeu .tag.active");
-      const valeuFiltro = tagAtiva ? tagAtiva.getAttribute("data-value") : "todos";
-
-      // 2. Passando a peneira nos posts
-      let postsFiltrados = todasAvaliacoes.filter(post => {
-        
-        // Regra 1: Só as minhas
-        if (apenasMinhas && post.sujeito !== usuarioLogado) return false;
-
-        // Regra 2: Busca por nome ou review
-        const textoPost = `${post.sujeito} ${post.review || ""}`.toLowerCase();
-        if (busca && !textoPost.includes(busca)) return false;
-
-        // Regra 3: Sabor Exato
-        if (sabor && post.sabor !== sabor) return false;
-
-        // Regra 4: Nota Mínima
-        if (post.nota < notaMinima) return false;
-
-        // Regra 5: Valeu a Pena?
-        if (valeuFiltro !== "todos") {
-          const ehTrue = valeuFiltro === "true";
-          if (post.valeu_a_pena !== ehTrue) return false;
-        }
-
-        return true; // Passou em todas as regras, continua na lista!
-      });
-
-      // 3. Ordenando a lista que sobrou
-      postsFiltrados.sort((a, b) => {
-        if (ordem === "recentes") return new Date(b.createdAt) - new Date(a.createdAt);
-        if (ordem === "antigos") return new Date(a.createdAt) - new Date(b.createdAt);
-        if (ordem === "maior_nota") return b.nota - a.nota;
-        if (ordem === "menor_nota") return a.nota - b.nota;
-        if (ordem === "menor_preco") return a.valor - b.valor;
-        return 0;
-      });
-
-      // 4. Manda desenhar a nova lista na tela
-      renderizarPosts(postsFiltrados); 
-    });
-  }
-
-  // AÇÃO DO BOTÃO LIMPAR
-  if (btnLimpar) {
-    btnLimpar.addEventListener("click", () => {
-      // Zera tudo
-      document.getElementById("filtroBusca").value = "";
-      document.getElementById("checkMeusPosts").checked = false;
-      document.getElementById("filtroSabor").value = "";
-      document.getElementById("filtroNota").value = "";
-      document.getElementById("filtroOrdem").value = "recentes";
-
-      document.querySelectorAll("#tagGroupValeu .tag").forEach(t => t.classList.remove("active"));
-      const tagTodos = document.querySelector("#tagGroupValeu .tag[data-value='todos']");
-      if(tagTodos) tagTodos.classList.add("active");
-
-      // Devolve a timeline inteira e original
-      renderizarPosts(todasAvaliacoes);
-    });
-  }
-});
