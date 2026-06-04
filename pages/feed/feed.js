@@ -176,7 +176,7 @@ async function carregarFeed() {
 
 async function deletarPost(id) {
     try {
-        const resposta = await fetch(`https://monster-reviews-api.onrender.com/api/posts/${id}`, {
+        const resposta = await fetch(`https://monster-reviews-api.onrender.com/api/avaliacoes/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': localStorage.getItem('authToken')
