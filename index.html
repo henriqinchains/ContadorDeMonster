@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="feed.css" />
-    <link rel="icon" href="../../src/img/monster.png" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="/src/img/monster.png" />
   </head>
   <body>
     <nav>
@@ -92,7 +92,7 @@
             Plano Pro
           </div>
           <div class="dropdown-sep"></div>
-          <div id="btnSairFeed" class="dropdown-item danger">
+          <div id="btnSair" class="dropdown-item danger">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -118,7 +118,6 @@
           <button
             class="btn-registrar"
             onclick="
-              window.location.href = '../../index.html';
               localStorage.setItem('autorizacao', 1);
             "
           >
@@ -209,17 +208,17 @@
         </div>
       </div>
     </div>
-    <script src="feed.js" defer></script>
+    <script src="index.js" defer></script>
     <script>
       // O evento de Sair fica aqui de forma limpa e isolada
       document
-        .getElementById("btnSairFeed")
+        .getElementById("btnSair")
         .addEventListener("click", (event) => {
           event.preventDefault();
           localStorage.removeItem("authToken");
           localStorage.removeItem("loggedUser");
           localStorage.removeItem("loggedEmail");
-          window.location.href = "../login/login.html";
+          window.location.href = "/login/login.html";
         });
     </script>
   </body>
