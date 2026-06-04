@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnAbrirModal.addEventListener("click", (e) => {
       e.preventDefault();
       modalContainer.style.display = "flex";
+      document.body.style.overflow = "hidden";
       if (selectSabor) selectSabor.focus(); 
     });
   }
@@ -126,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. FUNÇÃO PARA FECHAR E LIMPAR TUDO
   const fecharModal = () => {
     modalContainer.style.display = "none";
+    document.body.style.overflow = "";
     if (formAvaliacao) formAvaliacao.reset();
     if (inputSujeito) inputSujeito.value = usuarioLogado; // Devolve o nome
   };
@@ -137,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 6. FECHAR CLICANDO FORA DA TELA
-  window.addEventListener("click", (e) => {
+  window.addEventListener("mousedown", (e) => {
     if (e.target === modalContainer) {
       fecharModal();
     }
