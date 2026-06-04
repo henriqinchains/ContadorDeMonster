@@ -153,12 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         // Empacota tudo do form (inclusive a foto!)
         const formData = new FormData(formAvaliacao);
-        
-        // TRUQUE: Como seu form manda "sim" ou "nao", e o banco salva boolean (true/false)
-        const valeuTexto = formData.get("valeu");
-        formData.set("valeu_a_pena", valeuTexto === "sim" ? "true" : "false");
-        formData.delete("valeu"); // Tira o velho pra não sujar o envio
-        
         const resposta = await fetch("https://monster-reviews-api.onrender.com/api/avaliacoes", {
           method: "POST",
           body: formData
@@ -210,7 +204,7 @@ async function carregarFeed() {
         "★".repeat(Math.round(post.nota / 2)) +
         "☆".repeat(5 - Math.round(post.nota / 2));
       const valeuClasse = post.valeu_a_pena ? "valeu-sim" : "valeu-nao";
-      const valeuTexto = post.valeu_a_pena ? "✓ Sim" : "✕ Não";
+      const valeuTexto = post.valeu_a_pena ? "Sim" : "Não";
 
       const postArticle = document.createElement("article");
       postArticle.className = "post-card";
