@@ -331,3 +331,22 @@ async function carregarRanking() {
     console.error(erro);
   }
 }
+
+function preencherComboboxUsuarios(avaliacoes) {
+  const datalist = document.getElementById("listaUsuarios");
+  
+  // O Set pega todos os 'sujeitos' e remove os repetidos automaticamente!
+  const usuariosUnicos = [...new Set(avaliacoes.map(post => post.sujeito))];
+
+  // Limpa a lista antes de preencher
+  datalist.innerHTML = "";
+
+  // Cria uma <option> para cada usuário e joga lá dentro
+  usuariosUnicos.forEach(nome => {
+    if (nome) { // Só previne de colocar nomes vazios
+      const option = document.createElement("option");
+      option.value = nome;
+      datalist.appendChild(option);
+    }
+  });
+}
