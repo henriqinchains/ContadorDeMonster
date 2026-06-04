@@ -57,7 +57,7 @@ function initLogin() {
   // Verifica se já existe token
   const token = localStorage.getItem("authToken");
   if (token) {
-    window.location.href = "../feed/feed.html";
+    window.location.href = "../../index.html";
     return;
   }
 
