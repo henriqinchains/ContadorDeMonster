@@ -95,6 +95,82 @@ function toggleTag(el) {
   el.classList.add("active");
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const btnAbrirModal = document.getElementById("btn-abrir-registro");
+  const modalContainer = document.getElementById("modal-container");
+  const formAvaliacao = document.getElementById("formAvaliacao");
+  const btnSair = document.getElementById("btnSair");
+  const btnSubmit = document.getElementById("btnSubmit");
+  const inputSujeito = document.getElementById("sujeito");
+  const selectSabor = document.querySelector('select[name="sabor"]');
+  const usuarioLogado = localStorage.getItem("loggedUser") || "Desconhecido";
+  if (inputSujeito) {
+    inputSujeito.value = usuarioLogado;
+  }
+  if (btnAbrirModal) {
+    btnAbrirModal.addEventListener("click", (e) => {
+      e.preventDefault();
+      modalContainer.style.display = "flex";
+      selectSabor.focus();
+    });
+  }
+  if (btnSair) {
+    btnSair.addEventListener("click", () => {
+      modalContainer.style.display = "none";
+      formAvaliacao.reset(); // Limpa a sujeira do form
+      inputSujeito.value = usuarioLogado; // Devolve o nome que o reset apagou
+    });
+  }
+  window.addEventListener("click", (e) => {
+    if (e.target === modalContainer) {
+      modalContainer.style.display = "none";
+    }
+  });
+
+  // 6. ENVIAR OS DADOS PRO BACK-END (FETCH)
+  if (formAvaliacao) {
+    formAvaliacao.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const textoOriginal = btnSubmit.innerText;
+      btnSubmit.innerText = "Enviando... 🚀";
+      btnSubmit.disabled = true;
+
+      try {
+        // Empacota tudo do form (inclusive a foto!)
+        const formData = new FormData(formAvaliacao);
+        
+        // TRUQUE: Como seu form manda "sim" ou "nao", e o banco salva boolean (true/false)
+        const valeuTexto = formData.get("valeu");
+        formData.set("valeu_a_pena", valeuTexto === "sim" ? "true" : "false");
+        formData.delete("valeu"); // Tira o velho pra não sujar o envio
+        
+        const resposta = await fetch("https://monster-reviews-api.onrender.com/api/avaliacoes", {
+          method: "POST",
+          body: formData
+        });
+
+        const dados = await resposta.json();
+
+        if (resposta.ok) {
+          alert("Review postada com sucesso! 🔋");
+          modalContainer.style.display = "none";
+          formAvaliacao.reset();
+          location.reload(); // Atualiza a página pra latinha nova aparecer no feed!
+        } else {
+          alert(`Erro: ${dados.erro || "Falha ao postar"}`);
+        }
+      } catch (erro) {
+        console.error("Erro no envio:", erro);
+        alert("Erro ao conectar com o servidor.");
+      } finally {
+        // Devolve o botão ao normal se der erro
+        btnSubmit.innerText = textoOriginal;
+        btnSubmit.disabled = false;
+      }
+    });
+  }
+});
+
 async function carregarFeed() {
   const feedContainer = document.getElementById("feed-container");
   if (!feedContainer) return;
