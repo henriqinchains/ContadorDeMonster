@@ -99,12 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. MAPEANDO TUDO
   const btnAbrirModal = document.getElementById("btn-abrir-registro");
   const modalContainer = document.getElementById("modal-container");
-  
   const formAvaliacao = document.getElementById("formAvaliacao");
-  const btnSair = document.getElementById("btnSair");
   const btnSubmit = document.getElementById("btnSubmit");
   const btnFecharModal = document.getElementById("btn-fechar-modal"); // <-- O FILHO DA PUTA AQUI
-  
   const inputSujeito = document.getElementById("sujeito");
   const selectSabor = document.querySelector('select[name="sabor"]');
 
