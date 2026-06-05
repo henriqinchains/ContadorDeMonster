@@ -80,52 +80,28 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarEstatisticas(targetUser);
 });
 
-// Função para descobrir o Sabor Favorito
-function calcularSaborFavorito(arrayDePosts) {
-  if (arrayDePosts.length === 0) return "-";
-  
-  const contagem = {};
-  arrayDePosts.forEach(post => {
-    const sabor = post.sabor || "Desconhecido";
-    contagem[sabor] = (contagem[sabor] || 0) + 1;
-  });
-
-  // Acha quem tem o maior número na contagem
-  return Object.keys(contagem).reduce((a, b) => contagem[a] > contagem[b] ? a : b);
-}
-
-// O Fetch que busca as notas e faz a matemática
+// O Fetch que busca as estatísticas pelo servidor
 async function carregarEstatisticas(targetUser) {
   try {
-    const resposta = await fetch("https://monster-reviews-api.onrender.com/api/avaliacoes");
-    const todosPosts = await resposta.json();
+    // Chama a rota passando o nome do cara na URL
+    const url = `https://monster-reviews-api.onrender.com/api/estatisticas?user=${targetUser}`;
+    const resposta = await fetch(url);
+    const dados = await resposta.json();
     
-    // --- ESTATÍSTICAS GLOBAIS (O Bando de Dados Inteiro) ---
-    const globalTotal = todosPosts.length;
-    const globalGasto = todosPosts.reduce((soma, post) => soma + Number(post.valor || 0), 0);
-    const globalMedia = globalTotal > 0 ? (todosPosts.reduce((soma, post) => soma + Number(post.nota || 0), 0) / globalTotal) : 0;
-    const globalFav = calcularSaborFavorito(todosPosts);
+    // --- ATUALIZA A TELA: ESTATÍSTICAS GLOBAIS ---
+    document.getElementById("globalTotalLatas").textContent = dados.global.totalLatas;
+    document.getElementById("globalGasto").textContent = `R$ ${dados.global.totalGasto.toFixed(2).replace(".", ",")}`;
+    document.getElementById("globalMedia").textContent = dados.global.mediaNotas.toFixed(1);
+    document.getElementById("globalSaborFav").textContent = dados.global.saborFavorito;
 
-    document.getElementById("globalTotalLatas").textContent = globalTotal;
-    document.getElementById("globalGasto").textContent = `R$ ${globalGasto.toFixed(2).replace(".", ",")}`;
-    document.getElementById("globalMedia").textContent = globalMedia.toFixed(1);
-    document.getElementById("globalSaborFav").textContent = globalFav;
-
-    // --- ESTATÍSTICAS DO USUÁRIO ---
-    const userPosts = todosPosts.filter(post => post.sujeito === targetUser);
-    
-    const userTotal = userPosts.length;
-    const userGasto = userPosts.reduce((soma, post) => soma + Number(post.valor || 0), 0);
-    const userMedia = userTotal > 0 ? (userPosts.reduce((soma, post) => soma + Number(post.nota || 0), 0) / userTotal) : 0;
-    const userFav = calcularSaborFavorito(userPosts);
-
-    document.getElementById("userTotalLatas").textContent = userTotal;
-    document.getElementById("userGasto").textContent = `R$ ${userGasto.toFixed(2).replace(".", ",")}`;
-    document.getElementById("userMedia").textContent = userMedia.toFixed(1);
-    document.getElementById("userSaborFav").textContent = userFav;
+    // --- ATUALIZA A TELA: ESTATÍSTICAS DO USUÁRIO ---
+    document.getElementById("userTotalLatas").textContent = dados.usuario.totalLatas;
+    document.getElementById("userGasto").textContent = `R$ ${dados.usuario.totalGasto.toFixed(2).replace(".", ",")}`;
+    document.getElementById("userMedia").textContent = dados.usuario.mediaNotas.toFixed(1);
+    document.getElementById("userSaborFav").textContent = dados.usuario.saborFavorito;
 
   } catch (erro) {
-    console.error("Erro ao carregar estatísticas:", erro);
+    console.error("Erro ao carregar estatísticas do backend:", erro);
   }
 }
 
