@@ -3,6 +3,9 @@ let userRole = "";
 let todasAvaliacoes = [];
 const feedContainer = document.getElementById("feed-container");
 
+// ==========================================
+// 1. CONTROLE E VALIDAÇÃO DE SESSÃO
+// ==========================================
 async function verificarSessao() {
   try {
     const resposta = await fetch(
@@ -15,7 +18,7 @@ async function verificarSessao() {
 
     if (!resposta.ok) {
       window.location.href = "./pages/login/login.html";
-      return;
+      return false;
     }
 
     const dadosUsuario = await resposta.json();
@@ -24,16 +27,16 @@ async function verificarSessao() {
     userRole = dadosUsuario.cargo || "user";
 
     inicializarInterface(dadosUsuario);
+    return true; // Retorna true para liberar a inicialização do DOM
   } catch (erro) {
     console.error("Erro ao verificar sessão segura:", erro);
     window.location.href = "./pages/login/login.html";
+    return false;
   }
 }
 
-verificarSessao();
-
 // ==========================================
-// RENDERIZAÇÃO DA INTERFACE PÓS-LOGIN
+// 2. INICIALIZAÇÃO DA INTERFACE PÓS-LOGIN
 // ==========================================
 function inicializarInterface(usuario) {
   const loggedUserEl = document.getElementById("loggedUser");
@@ -70,9 +73,14 @@ function inicializarInterface(usuario) {
 }
 
 // ==========================================
-// INICIALIZAÇÃO DOS COMPONENTES VISUAIS (DOM)
+// 3. INICIALIZAÇÃO DOS COMPONENTES VISUAIS (DOM)
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Trava a execução e só avança se o usuário estiver de fato autenticado
+  const logadoComSucesso = await verificarSessao();
+  if (!logadoComSucesso) return;
+
+  // Gerenciamento de abas (Tabs)
   document.querySelectorAll(".tl-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       document
@@ -116,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // POST DE NOVA AVALIAÇÃO (ATUALIZADO)
+  // POST DE NOVA AVALIAÇÃO
   if (formAvaliacao) {
     formAvaliacao.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -223,6 +231,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ==========================================
+// 4. SISTEMA DE MENUS E DROPDOWNS
+// ==========================================
 function toggleDropdown() {
   const nu = document.getElementById("navUser");
   if (nu) nu.classList.toggle("open");
@@ -235,6 +246,9 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ==========================================
+// 5. CARREGAMENTO E REDERIZAÇÃO DA TIMELINE
+// ==========================================
 async function carregarFeed() {
   if (!feedContainer) return;
   feedContainer.innerHTML = "<p>Carregando avaliações monstruosas...</p>";
@@ -321,7 +335,9 @@ function renderizarPosts(arrayAvaliacoes) {
   });
 }
 
-// DELETAR POST (ATUALIZADO PARA COOKIES)
+// ==========================================
+// 6. DELETAR POST (GERENCIAMENTO FEED)
+// ==========================================
 async function deletarPost(id) {
   if (!confirm("Tem certeza que quer apagar essa review, monstro?")) return;
   try {
@@ -344,6 +360,9 @@ async function deletarPost(id) {
   }
 }
 
+// ==========================================
+// 7. RANKING E UTILITÁRIOS DE COMBOBOX
+// ==========================================
 async function carregarRanking() {
   const container = document.getElementById("ranking-container");
   if (!container) return;
