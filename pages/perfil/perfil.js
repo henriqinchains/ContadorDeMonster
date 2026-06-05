@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("email", emailLogado);
 
         try {
-          const resposta = await fetch("https://monster-reviews-api.onrender.com/avatar", {
+          const resposta = await fetch("https://monster-reviews-api.onrender.com/api/usuarios/avatar", {
             method: "POST",
             body: formData // Manda a caixa pesada pro servidor
           });
