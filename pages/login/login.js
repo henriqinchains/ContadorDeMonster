@@ -1,20 +1,18 @@
+const API_URL = "http://localhost:3000/api";
 let tokenTemporario = "";
-
 // ==========================================
 // FUNÇÃO AUXILIAR DE CHECAGEM DE SESSÃO
 // ==========================================
 async function checarLogin() {
   try {
-    const response = await fetch(
-      "https://monster-reviews-api.onrender.com/api/auth/me",
-      {
-        method: "GET",
-        credentials: "include",
-      },
-    );
+    const response = await fetch(`${API_URL}/auth/me`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     if (response.ok) {
-      window.location.href = "../../index.html";
+      // Ajustado para garantir o redirecionamento correto na raiz do GitHub Pages
+      window.location.href = window.location.origin + "../../index.html";
     }
   } catch (error) {
     console.error("Erro ao verificar sessão inicial:", error);
@@ -54,7 +52,10 @@ function SwitchToRecovery() {
   document.getElementById("recovery-section").style.display = "block";
 }
 
+// Corrigido para fazer a transição correta após o envio do e-mail de recuperação
 function SwitchToReset() {
+  document.getElementById("login-section").style.display = "none";
+  document.getElementById("register-section").style.display = "none";
   document.getElementById("recovery-section").style.display = "none";
   document.getElementById("reset-section").style.display = "block";
 }
@@ -98,15 +99,12 @@ function initLogin() {
     message.style.color = "#adadad";
 
     try {
-      const response = await fetch(
-        "https://monster-reviews-api.onrender.com/api/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ login: usuario, password: senha }),
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ login: usuario, password: senha }),
+        credentials: "include",
+      });
 
       const data = await response.json();
 
@@ -118,7 +116,7 @@ function initLogin() {
         form.reset();
 
         window.setTimeout(() => {
-          window.location.href = "../../index.html";
+          window.location.href = window.location.origin + "../../index.html";
         }, 1500);
       }
     } catch (error) {
@@ -132,7 +130,7 @@ function initLogin() {
 }
 
 // ==========================================
-// LÓGICA DE CADASTRO (ATUALIZADA)
+// LÓGICA DE CADASTRO
 // ==========================================
 function initCadastro() {
   const formCadastro = document.getElementById("formCadastro");
@@ -166,19 +164,16 @@ function initCadastro() {
     message.style.display = "block";
 
     try {
-      const resposta = await fetch(
-        "https://monster-reviews-api.onrender.com/api/auth/cadastro",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            login: usuario,
-            email: email,
-            password: senha,
-          }),
-          credentials: "include",
-        },
-      );
+      const resposta = await fetch(`${API_URL}/auth/cadastro`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          login: usuario,
+          email: email,
+          password: senha,
+        }),
+        credentials: "include",
+      });
 
       const dados = await resposta.json();
 
@@ -189,7 +184,7 @@ function initCadastro() {
         formCadastro.reset();
 
         window.setTimeout(() => {
-          window.location.href = "../../index.html";
+          window.location.href = window.location.origin + "../../index.html";
         }, 2000);
       } else {
         message.textContent = `❌ ${dados.erro || "Erro ao cadastrar."}`;
@@ -230,14 +225,11 @@ function initRecuperacao() {
     msgRecuperacao.style.display = "none";
 
     try {
-      const resposta = await fetch(
-        "https://monster-reviews-api.onrender.com/api/esqueci-senha",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: emailDigitado }),
-        },
-      );
+      const resposta = await fetch(`${API_URL}/esqueci-senha`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailDigitado }),
+      });
 
       const dados = await resposta.json();
       msgRecuperacao.style.display = "block";
@@ -251,7 +243,7 @@ function initRecuperacao() {
 
         setTimeout(() => {
           msgRecuperacao.style.display = "none";
-          SwitchToReset();
+          SwitchToReset(); // Muda para a tela de digitar o PIN e a nova senha
         }, 1500);
       } else {
         msgRecuperacao.style.color = "#ff3333";
@@ -301,18 +293,15 @@ function initReset() {
     msgReset.style.display = "none";
 
     try {
-      const resposta = await fetch(
-        "https://monster-reviews-api.onrender.com/api/resetar-senha",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            token: tokenTemporario,
-            codigoDigitado: codigoDigitado,
-            novaSenha: senha1,
-          }),
-        },
-      );
+      const resposta = await fetch(`${API_URL}/resetar-senha`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: tokenTemporario,
+          codigoDigitado: codigoDigitado,
+          novaSenha: senha1,
+        }),
+      });
 
       const dados = await resposta.json();
       msgReset.style.display = "block";
