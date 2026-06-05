@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Monta a caixa (FormData) com a foto e o e-mail do dono
         const formData = new FormData();
         formData.append("fotoPerfil", input.files[0]);
-        formData.append("email", emailLogado);
+        formData.append("nome", usuarioLogado);
 
         try {
           const resposta = await fetch("https://monster-reviews-api.onrender.com/api/usuarios/avatar", {
