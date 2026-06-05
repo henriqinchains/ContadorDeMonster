@@ -104,8 +104,8 @@ function initLogin() {
         localStorage.setItem("loggedUser", data.login);
         localStorage.setItem("loggedEmail", data.email);
         localStorage.setItem("userRole", data.cargo);
-        if (dados.avatarUrl) {
-          localStorage.setItem(`avatar_${dados.email}`, dados.avatarUrl);
+        if (data.avatarUrl) {
+          localStorage.setItem(`avatar_${data.email}`, data.avatarUrl);
         }
 
         message.style.color = "#00ff66";
