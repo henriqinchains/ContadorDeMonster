@@ -13,24 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loggedUserEmailEl = document.getElementById("loggedUserEmail");
 
   if (loggedUserEl) loggedUserEl.textContent = loggedUser;
-  if (loggedUserEmailEl)
-    loggedUserEmailEl.textContent = localStorage.getItem("loggedEmail");
-
-  // Atualiza a foto na bolinha da Navbar
-  const avatarNav = document.querySelector("#navUser .user-avatar");
-  const avatarSalvo = localStorage.getItem(`avatar_${loggedUserEmailEl}`);
-
-  if (avatarNav) {
-    if (avatarSalvo) {
-      // Se tem foto salva, coloca como fundo e limpa o texto
-      avatarNav.style.backgroundImage = `url(${avatarSalvo})`;
-      avatarNav.textContent = ""; 
-    } else {
-        // Se não tem foto, coloca as iniciais do nome
-        avatarNav.style.backgroundImage = "none";
-        avatarNav.textContent = loggedUserEl.substring(0, 2).toUpperCase();
-    }
-  }
+  if (loggedUserEmailEl) loggedUserEmailEl.textContent = localStorage.getItem("loggedEmail");
 
   carregarFeed();
   carregarRanking();
