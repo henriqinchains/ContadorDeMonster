@@ -27,19 +27,11 @@
       <div class="nav-user" id="navUser">
         <div class="user-trigger" onclick="toggleDropdown()">
           <div class="user-avatar"></div>
-          <span id="loggedUser">Meira</span>
+          <span id="loggedUser">Usuário</span>
           <svg class="chevron" viewBox="0 0 24 24">
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </div>
-
-        <input
-          type="file"
-          id="fileInput"
-          accept="image/*"
-          style="display: none"
-        />
-
         <div class="user-dropdown">
           <div class="dropdown-header">
             <strong id="loggedUserEmail"></strong>
@@ -58,39 +50,6 @@
               <circle cx="12" cy="7" r="4" />
             </svg>
             Meu Perfil
-          </div>
-          <div class="dropdown-item">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="3" />
-              <path
-                d="M19.07 4.93A10 10 0 1 0 4.93 19.07 10 10 0 0 0 19.07 4.93z"
-              />
-            </svg>
-            Configurações
-          </div>
-          <div class="dropdown-item">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-              <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-              <line x1="6" y1="1" x2="6" y2="4" />
-              <line x1="10" y1="1" x2="10" y2="4" />
-              <line x1="14" y1="1" x2="14" y2="4" />
-            </svg>
-            Plano Pro
           </div>
           <div class="dropdown-sep"></div>
           <div id="btnSair" class="dropdown-item danger">
