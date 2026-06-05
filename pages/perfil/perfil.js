@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3. PREENCHENDO A IDENTIDADE VISUAL
   document.getElementById("profileNameDisplay").textContent = targetUser;
-  document.getElementById("navUserName").textContent = usuarioLogado; // Nome lá em cima na Navbar
+  document.getElementById("loggedUser").textContent = usuarioLogado; // Nome lá em cima na Navbar
   
   // Ajustes de Perfil Visitante vs Meu Perfil
   const btnTrocarFoto = document.getElementById("btnTrocarFotoPerfil");
