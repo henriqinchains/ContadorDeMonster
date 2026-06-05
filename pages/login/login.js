@@ -1,18 +1,20 @@
 const API_URL = "https://monster-reviews-api.onrender.com/api";
 let tokenTemporario = "";
+
 // ==========================================
 // FUNÇÃO AUXILIAR DE CHECAGEM DE SESSÃO
 // ==========================================
 async function checarLogin() {
   try {
+    // Agora ele bate na rota /me mandando os cookies de forma segura
     const response = await fetch(`${API_URL}/auth/me`, {
       method: "GET",
-      credentials: "include",
+      credentials: "include", 
     });
 
     if (response.ok) {
-      // Ajustado para garantir o redirecionamento correto na raiz do GitHub Pages
-      window.location.href = "/ContadordeMonster/index.html";
+      // Caminho corrigido! Direto pra raiz.
+      window.location.href = "/index.html";
     }
   } catch (error) {
     console.error("Erro ao verificar sessão inicial:", error);
@@ -52,7 +54,6 @@ function SwitchToRecovery() {
   document.getElementById("recovery-section").style.display = "block";
 }
 
-// Corrigido para fazer a transição correta após o envio do e-mail de recuperação
 function SwitchToReset() {
   document.getElementById("login-section").style.display = "none";
   document.getElementById("register-section").style.display = "none";
@@ -103,7 +104,7 @@ function initLogin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ login: usuario, password: senha }),
-        credentials: "include",
+        credentials: "include", // Essencial para receber o Cookie do Render
       });
 
       const data = await response.json();
@@ -111,12 +112,24 @@ function initLogin() {
       if (!response.ok) {
         throw new Error(data.erro || "Falha no login");
       } else {
+        // --- O NOSSO TOQUE DE MESTRE PARA A INTERFACE ---
+        // O token agora tá seguro no Cookie, então não salvamos ele aqui.
+        // Mas a gente salva os dados visuais pro feed e pro perfil usarem:
+        localStorage.setItem("loggedUser", data.login);
+        localStorage.setItem("loggedEmail", data.email);
+        localStorage.setItem("userRole", data.cargo);
+        
+        if (data.avatarUrl) {
+            localStorage.setItem(`avatar_${data.email}`, data.avatarUrl);
+        }
+
         message.style.color = "#00ff66";
         message.textContent = `Login realizado com sucesso! Redirecionando...`;
         form.reset();
 
         window.setTimeout(() => {
-          window.location.href = "/ContadordeMonster/index.html";
+          // Caminho corrigido!
+          window.location.href = "/index.html";
         }, 1500);
       }
     } catch (error) {
@@ -142,15 +155,12 @@ function initCadastro() {
     const usuario = document.getElementById("usuario-cadastro").value;
     const email = document.getElementById("email-cadastro").value;
     const senha = document.getElementById("senha-cadastro").value;
-    const confirmacaoSenha = document.getElementById(
-      "confirm-senha-cadastro",
-    ).value;
+    const confirmacaoSenha = document.getElementById("confirm-senha-cadastro").value;
     const message = document.getElementById("cadastro-message");
 
     if (senha !== confirmacaoSenha) {
       message.style.display = "block";
-      message.textContent =
-        "As senhas não coincidem. Por favor, tente novamente.";
+      message.textContent = "As senhas não coincidem. Por favor, tente novamente.";
       message.style.color = "#aa0000";
       document.getElementById("confirm-senha-cadastro").value = "";
       setTimeout(() => {
@@ -172,19 +182,24 @@ function initCadastro() {
           email: email,
           password: senha,
         }),
-        credentials: "include",
+        credentials: "include", // Essencial para receber o Cookie do auto-login
       });
 
       const dados = await resposta.json();
 
       if (resposta.ok) {
+        // Salva os dados estéticos pro Front-end
+        localStorage.setItem("loggedUser", dados.login);
+        localStorage.setItem("loggedEmail", dados.usuario.email);
+
         message.textContent = `✅ ${dados.mensagem}`;
         message.style.color = "#00ff66";
 
         formCadastro.reset();
 
         window.setTimeout(() => {
-          window.location.href = "/ContadordeMonster/index.html";
+          // Caminho corrigido!
+          window.location.href = "/index.html";
         }, 2000);
       } else {
         message.textContent = `❌ ${dados.erro || "Erro ao cadastrar."}`;
@@ -243,7 +258,7 @@ function initRecuperacao() {
 
         setTimeout(() => {
           msgRecuperacao.style.display = "none";
-          SwitchToReset(); // Muda para a tela de digitar o PIN e a nova senha
+          SwitchToReset(); 
         }, 1500);
       } else {
         msgRecuperacao.style.color = "#ff3333";
