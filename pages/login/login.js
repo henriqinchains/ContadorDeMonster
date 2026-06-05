@@ -297,7 +297,7 @@ function initReset() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tok en: tokenTemporario,
+          token: tokenTemporario,
           codigoDigitado: codigoDigitado,
           novaSenha: senha1,
         }),
