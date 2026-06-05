@@ -12,7 +12,7 @@ async function checarLogin() {
 
     if (response.ok) {
       // Ajustado para garantir o redirecionamento correto na raiz do GitHub Pages
-      window.location.href = window.location.origin + "../../index.html";
+      window.location.href = "/";
     }
   } catch (error) {
     console.error("Erro ao verificar sessão inicial:", error);
@@ -116,7 +116,7 @@ function initLogin() {
         form.reset();
 
         window.setTimeout(() => {
-          window.location.href = window.location.origin + "../../index.html";
+          window.location.href = "/";
         }, 1500);
       }
     } catch (error) {
@@ -184,7 +184,7 @@ function initCadastro() {
         formCadastro.reset();
 
         window.setTimeout(() => {
-          window.location.href = window.location.origin + "../../index.html";
+          window.location.href = "/";
         }, 2000);
       } else {
         message.textContent = `❌ ${dados.erro || "Erro ao cadastrar."}`;
