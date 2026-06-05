@@ -19,55 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarFeed();
   carregarRanking();
 
-  const userAvatar = document.querySelector("#navUser .user-avatar");
-  const fileInput = document.getElementById("fileInput");
-
-  if (userAvatar && fileInput) {
-    userAvatar.addEventListener("click", (e) => {
-      e.stopPropagation();
-      fileInput.click();
-    });
-  }
-
-  if (fileInput) {
-    fileInput.addEventListener("change", (event) => {
-      const input = event.target;
-
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-          const base64Image = e.target.result;
-
-          if (userAvatar) {
-            userAvatar.style.background = "none";
-            userAvatar.style.backgroundImage = `url(${base64Image})`;
-            userAvatar.style.backgroundColor = "transparent";
-            userAvatar.style.backgroundSize = "cover";
-            userAvatar.style.backgroundPosition = "center";
-          }
-
-          const emailLogado =
-            localStorage.getItem("loggedEmail") || "avatar_generico";
-          localStorage.setItem(`avatar_${emailLogado}`, base64Image);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-      }
-    });
-  }
-
-  const emailLogado = localStorage.getItem("loggedEmail") || "avatar_generico";
-  const avatarSalvo = localStorage.getItem(`avatar_${emailLogado}`);
-
-  if (avatarSalvo && userAvatar) {
-    userAvatar.style.background = "none";
-    userAvatar.style.backgroundImage = `url(${avatarSalvo})`;
-    userAvatar.style.backgroundColor = "transparent";
-    userAvatar.style.backgroundSize = "cover";
-    userAvatar.style.backgroundPosition = "center";
-  }
-
   document.querySelectorAll(".tl-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       document
