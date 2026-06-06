@@ -309,6 +309,10 @@ nav {
   color: #fff;
   font-size: 0.95rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .post-meta {

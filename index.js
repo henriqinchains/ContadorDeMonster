@@ -6,6 +6,7 @@ let userRole = sessionStorage.getItem("cache_cargo") || "user";
 let userEmail = sessionStorage.getItem("cache_email") || "";
 let todasAvaliacoes = [];
 const feedContainer = document.getElementById("feed-container");
+const cacheMemoriaAvatares = {};
 
 // Renderiza o cache de sessão imediatamente para a Navbar nascer preenchida
 aplicarCacheImediato();
@@ -107,6 +108,8 @@ async function buscarAvatarEmSegundoPlano(usuario) {
     const resposta = await fetch(`https://monster-reviews-api.onrender.com/api/estatisticas?user=${encodeURIComponent(usuario)}`);
     const dados = await resposta.json();
     const urlFoto = dados.usuario?.avatarUrl || dados.avatarUrl;
+
+    const avatarNav = document.querySelector("#navUser .user-avatar");
 
     if (urlFoto) {
       sessionStorage.setItem(`cache_avatar_${usuario}`, urlFoto);
@@ -295,12 +298,25 @@ function renderizarPosts(arrayAvaliacoes) {
     const valeuClasse = post.valeu_a_pena ? "valeu-sim" : "valeu-nao";
     const valeuTexto = post.valeu_a_pena ? "Sim" : "Não";
 
+    const avatarElementId = `avatar-feed-${post._id}`;
+    const iniciais = post.sujeito ? post.sujeito.substring(0, 2).toUpperCase() : "US";
+
     const postArticle = document.createElement("article");
     postArticle.className = "post-card";
     postArticle.innerHTML = `
       <div class="post-head">
-        <div class="post-avatar" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">
-          ${post.sujeito.substring(0, 2).toUpperCase()}
+        <div class="post-avatar" id="${avatarElementId}" style="
+          background: linear-gradient(135deg,#e74c3c,#c0392b);
+          background-size: cover;
+          background-position: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          color: white;
+          border-radius: 50%;
+        ">
+          ${iniciais}
         </div>
         <div class="post-meta">
           <strong>
@@ -330,7 +346,72 @@ function renderizarPosts(arrayAvaliacoes) {
       </div>
     `;
     feedContainer.appendChild(postArticle);
+
+    resolverAvatarDoCardFeed(post.sujeito, avatarElementId);
   });
+}
+
+// ==========================================================================
+// GERENCIADOR DE AVATARES FIXADO CONTRA FALLBACK CINZA
+// ==========================================================================
+async function resolverAvatarDoCardFeed(usuario, elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+
+  // 1. Tenta pegar do sessionStorage
+  const cacheSessao = sessionStorage.getItem(`cache_avatar_${usuario}`);
+  if (cacheSessao) {
+    if (cacheSessao !== "none_found") {
+      el.style.background = "none"; // Remove o gradiente vermelho padrão
+      el.style.backgroundImage = `url(${cacheSessao})`;
+      el.textContent = "";
+    } else {
+      el.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
+      el.style.backgroundImage = "none";
+    }
+    return;
+  }
+
+  // 2. Tenta pegar do cache em memória
+  if (cacheMemoriaAvatares[usuario]) {
+    if (cacheMemoriaAvatares[usuario] !== "none" && cacheMemoriaAvatares[usuario] !== "none_found") {
+      el.style.background = "none";
+      el.style.backgroundImage = `url(${cacheMemoriaAvatares[usuario]})`;
+      el.textContent = "";
+    } else {
+      el.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
+      el.style.backgroundImage = "none";
+    }
+    return;
+  }
+
+  // 3. Busca na API em segundo plano
+  try {
+    cacheMemoriaAvatares[usuario] = "none";
+
+    const url = `https://monster-reviews-api.onrender.com/api/estatisticas?user=${encodeURIComponent(usuario)}`;
+    const resposta = await fetch(url);
+    const dados = await resposta.json();
+    const urlFoto = dados.usuario?.avatarUrl || dados.avatarUrl;
+
+    if (urlFoto) {
+      sessionStorage.setItem(`cache_avatar_${usuario}`, urlFoto);
+      cacheMemoriaAvatares[usuario] = urlFoto;
+
+      el.style.background = "none";
+      el.style.backgroundImage = `url(${urlFoto})`;
+      el.textContent = "";
+    } else {
+      sessionStorage.setItem(`cache_avatar_${usuario}`, "none_found");
+      cacheMemoriaAvatares[usuario] = "none_found";
+
+      el.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
+      el.style.backgroundImage = "none";
+    }
+  } catch (erro) {
+    el.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
+    el.style.backgroundImage = "none";
+  }
 }
 
 async function deletarPost(id) {
