@@ -79,7 +79,8 @@ async function verificarSessao() {
 // ==========================================
 // 2. INICIALIZAÇÃO DA INTERFACE PÓS-LOGIN
 // ==========================================
-function inicializarInterface(usuario) {
+
+async function inicializarInterface(usuario) {
   const loggedUserEl = document.getElementById("loggedUser");
   const loggedUserEmailEl = document.getElementById("loggedUserEmail");
   const inputSujeito = document.getElementById("sujeito");
@@ -98,21 +99,14 @@ function inicializarInterface(usuario) {
       buscarAvatarEmSegundoPlano(usuario.login);
     }
   }
+  
+  await Promise.all([
+    carregarFeed(),
+    carregarRanking()
+  ]);
 
-  carregarFeed();
-  carregarRanking(); 
-}
-
-async function iniciarTimeline() {
-    // 1. Verifica o localStorage (Se não tiver, dá window.location pro login)
-    // OBS: Se redirecionar, o loading nunca some, mascarando a transição perfeitamente!
-    
-    // 2. Aguarda o seu banco de dados
-    await carregarFeed();
-    await carregarRanking();
-
-    // 3. Tudo carregado e renderizado? Tira a cortina!
-    ocultarLoading();
+  // Só chega nessa linha quando o feed e o ranking estiverem 100% prontos na tela.
+  ocultarLoading(); 
 }
 
 function ocultarLoading() {
