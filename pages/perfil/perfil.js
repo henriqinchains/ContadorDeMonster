@@ -299,3 +299,24 @@ document.addEventListener("click", (e) => {
   const nu = document.getElementById("navUser");
   if (nu && !nu.contains(e.target)) nu.classList.remove("open");
 });
+
+const modal = document.getElementById("modalSobre");
+const btn = document.getElementById("btnSobre");
+const span = document.getElementById("fecharModal");
+
+// Quando clica no botão do Nav, abre
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// Quando clica no X, fecha
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// Se o cara clicar fora da caixinha (no fundo escuro), fecha
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
