@@ -328,7 +328,7 @@ function renderizarPosts(arrayAvaliacoes) {
     postArticle.className = "post-card";
     postArticle.innerHTML = `
       <div class="post-head">
-        <div class="post-avatar" id="${avatarElementId}" style="
+        <div class="post-avatar" id="${avatarElementId}" data-usuario="${post.sujeito}" style="
           background: linear-gradient(135deg,#e74c3c,#c0392b);
           background-size: cover;
           background-position: center;
@@ -385,12 +385,11 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
   const cacheSessao = sessionStorage.getItem(`cache_avatar_${usuario}`);
   if (cacheSessao) {
     if (cacheSessao !== "none_found") {
-      // ⚡ CORREÇÃO: Limpa o fundo sem matar as propriedades de tamanho e posição
       el.style.background = "none";
       el.style.backgroundColor = "#11161d";
-      el.style.backgroundSize = "cover";       // 👈 REPLICA A NAVBAR
-      el.style.backgroundPosition = "center";   // 👈 REPLICA A NAVBAR
-      el.style.backgroundRepeat = "no-repeat"; // 👈 REPLICA A NAVBAR
+      el.style.backgroundSize = "cover";
+      el.style.backgroundPosition = "center";
+      el.style.backgroundRepeat = "no-repeat";
       el.style.backgroundImage = `url(${cacheSessao})`;
       el.textContent = "";
     } else {
@@ -402,13 +401,16 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
 
   // 2. Tenta pegar do cache em memória
   if (cacheMemoriaAvatares[usuario]) {
-    if (cacheMemoriaAvatares[usuario] !== "none" && cacheMemoriaAvatares[usuario] !== "none_found") {
-      // ⚡ CORREÇÃO: Limpa o fundo sem matar as propriedades de tamanho e posição
+    // Se já tem um post buscando essa foto, este post não faz nada. 
+    // Ele apenas espera a primeira requisição terminar e pintar a tela.
+    if (cacheMemoriaAvatares[usuario] === "buscando") return; 
+
+    if (cacheMemoriaAvatares[usuario] !== "none_found") {
       el.style.background = "none";
       el.style.backgroundColor = "#11161d";
-      el.style.backgroundSize = "cover";       // 👈 REPLICA A NAVBAR
-      el.style.backgroundPosition = "center";   // 👈 REPLICA A NAVBAR
-      el.style.backgroundRepeat = "no-repeat"; // 👈 REPLICA A NAVBAR
+      el.style.backgroundSize = "cover";
+      el.style.backgroundPosition = "center";
+      el.style.backgroundRepeat = "no-repeat";
       el.style.backgroundImage = `url(${cacheMemoriaAvatares[usuario]})`;
       el.textContent = "";
     } else {
@@ -420,32 +422,44 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
 
   // 3. Busca na API em segundo plano
   try {
-    cacheMemoriaAvatares[usuario] = "none";
+    // ⚡ Avisa os próximos posts que já estamos resolvendo isso
+    cacheMemoriaAvatares[usuario] = "buscando";
 
     const url = `https://monster-reviews-api.onrender.com/api/estatisticas?user=${encodeURIComponent(usuario)}`;
     const resposta = await fetch(url);
     const dados = await resposta.json();
     const urlFoto = dados.usuario?.avatarUrl || dados.avatarUrl;
 
+    // ⚡ FUNÇÃO INTERNA: Quando a foto chega, procura TODOS os posts desse usuário e atualiza de uma vez!
+    const atualizarTodosOsAvatares = (fotoUrl) => {
+      const avatares = document.querySelectorAll(`.post-avatar[data-usuario="${usuario}"]`);
+      avatares.forEach(avatarEl => {
+        if (fotoUrl) {
+          avatarEl.style.background = "none";
+          avatarEl.style.backgroundColor = "#11161d";
+          avatarEl.style.backgroundSize = "cover";
+          avatarEl.style.backgroundPosition = "center";
+          avatarEl.style.backgroundRepeat = "no-repeat";
+          avatarEl.style.backgroundImage = `url(${fotoUrl})`;
+          avatarEl.textContent = "";
+        } else {
+          avatarEl.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
+          avatarEl.style.backgroundImage = "none";
+        }
+      });
+    };
+
     if (urlFoto) {
       sessionStorage.setItem(`cache_avatar_${usuario}`, urlFoto);
       cacheMemoriaAvatares[usuario] = urlFoto;
-
-      el.style.background = "none";
-      el.style.backgroundColor = "#11161d";
-      el.style.backgroundSize = "cover";
-      el.style.backgroundPosition = "center";
-      el.style.backgroundRepeat = "no-repeat";
-      el.style.backgroundImage = `url(${urlFoto})`;
-      el.textContent = "";
+      atualizarTodosOsAvatares(urlFoto);
     } else {
       sessionStorage.setItem(`cache_avatar_${usuario}`, "none_found");
       cacheMemoriaAvatares[usuario] = "none_found";
-
-      el.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
-      el.style.backgroundImage = "none";
+      atualizarTodosOsAvatares(null);
     }
   } catch (erro) {
+    cacheMemoriaAvatares[usuario] = "none_found";
     el.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
     el.style.backgroundImage = "none";
   }
