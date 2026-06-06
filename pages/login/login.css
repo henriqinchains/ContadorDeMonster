@@ -182,3 +182,12 @@ button:disabled {
   font-size: 0.95rem;
   text-align: center;
 }
+
+.disclaimer-legal {
+  font-size: 0.75rem;
+  color: #888888;
+  text-align: center;
+  padding: 15px 20px;
+  margin-top: 30px;
+  border-top: 1px solid #333333;
+}
