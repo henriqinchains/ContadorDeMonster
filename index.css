@@ -564,12 +564,15 @@ nav {
 }
 .ranking-item.rank-3 .rank-posicao { color: #cd7f32; }
 
-/* Bloco de Filtros Laterais */
+/* ==========================================================================
+   5. COLUNA DIREITA (LIDERANÇA & FILTROS DO FEED) - FILTROS ATUALIZADO
+   ========================================================================== */
 .filter-form {
   background-color: var(--bg-darker);
   border: 1px solid var(--bg-card);
   border-radius: 8px;
   padding: 20px;
+  width: 100%; /* Garante estabilidade independente do container pai */
 }
 
 .filter-header {
@@ -668,6 +671,57 @@ nav {
   color: var(--monster-green);
   font-weight: bold;
   box-shadow: 0 0 8px rgba(0, 255, 102, 0.2);
+}
+
+/* ⚡ INJEÇÃO COESA DA CLASSE DE BOTÕES DENTRO DO ESCOPO DO FILTRO */
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.btn-group .btn {
+  flex: 1;
+  padding: 12px;
+  font-family: "Nova Square", sans-serif;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-group .btn-primary {
+  background-color: var(--monster-green);
+  color: var(--bg-main);
+  border: none;
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.2);
+}
+
+.btn-group .btn-primary:hover {
+  background-color: var(--monster-hover);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-group .btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid rgba(69, 162, 158, 0.4);
+}
+
+.btn-group .btn-ghost:hover {
+  border-color: #ff4d4d;
+  color: #ff4d4d;
+  background-color: rgba(255, 77, 77, 0.05);
+  transform: translateY(-2px);
+}
+
+.select-wrap {
+  position: relative;
+  width: 100%;
 }
 
 /* ==========================================================================

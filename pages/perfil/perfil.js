@@ -8,11 +8,10 @@ let targetUser = "";
 let isMeuPerfil = false;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ⚡ CORREÇÃO: Mapeado para 'loggedEmail' refletindo o ID real do seu perfil.html
+
   const loggedUserEmailEl = document.getElementById("loggedEmail");
   const loggedUserEl = document.getElementById("loggedUser");
 
-  // ⚡ CORREÇÃO: Corrigido os nomes das variáveis para emailLogado e usuarioLogado
   if (loggedUserEmailEl && emailLogado) {
     loggedUserEmailEl.textContent = emailLogado;
   }

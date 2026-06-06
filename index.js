@@ -320,7 +320,7 @@ function renderizarPosts(arrayAvaliacoes) {
         </div>
         <div class="post-meta">
           <strong>
-            <a href="./pages/perfil/perfil.html?user=${encodeURIComponent(post.sujeito)}" style="color: inherit; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+            <a href="./pages/perfil/perfil.html?user=${encodeURIComponent(post.sujeito)}" style="color: inherit; text-decoration: none; font-family: 'Nova Square'" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
               ${post.sujeito}
             </a>
           </strong>
@@ -336,8 +336,8 @@ function renderizarPosts(arrayAvaliacoes) {
         <div class="info-item"><span class="info-label">Nota</span><span class="info-value">${Number(post.nota).toFixed(1)} <span class="nota-stars">${estrelas}</span></span></div>
         <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
       </div>
-      <div class="post-desc">${post.review || "Sem descrição."}</div>
-      <div class="post-footer" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="post-desc" style="font-family: 'Nova Square';">${post.review || "Sem descrição."}</div>
+      <div class="post-footer" style="display: flex;  justify-content: space-between; align-items: center;">
         <button class="post-action">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           0
@@ -460,7 +460,7 @@ async function carregarRanking() {
 
       const linha = document.createElement("div");
       linha.className = `ranking-item ${classePodio}`;
-      linha.innerHTML = `<div class="rank-info"><span class="rank-posicao">${iconePosicao}</span><span class="rank-nome">${usuario._id}</span></div><div class="rank-latinhas">${usuario.totalLatinhas} 🥫</div>`;
+      linha.innerHTML = `<div class="rank-info"><span class="rank-posicao">${iconePosicao}</span><span class="rank-nome" style="font-family: 'Nova Square';">${usuario._id}</span></div><div class="rank-latinhas">${usuario.totalLatinhas} 🥫</div>`;
       container.appendChild(linha);
     });
   } catch (erro) { container.innerHTML = "<p style='text-align: center; color: #ff3333;'>Erro ao carregar o ranking.</p>"; console.error(erro); }
