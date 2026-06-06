@@ -114,13 +114,16 @@ async function inicializarInterface(usuario) {
 function ocultarLoading() {
     const overlay = document.getElementById('loading-overlay');
     if (overlay) {
-        // Zera a opacidade para fazer a transição suave do CSS
+        // Zera a opacidade para a transição suave
         overlay.style.opacity = '0';
         
-        // Remove da tela para não atrapalhar os cliques do usuário
         setTimeout(() => {
             overlay.style.visibility = 'hidden';
+            overlay.style.display = 'none'; // Garante que saiu do fluxo
         }, 500); 
+
+        // Grava que o usuário já viu a tela de loading hoje
+        sessionStorage.setItem('jaViuLoading', 'true');
     }
 }
 
@@ -158,6 +161,15 @@ async function buscarAvatarEmSegundoPlano(usuario) {
 document.addEventListener("DOMContentLoaded", async () => {
   const logadoComSucesso = await verificarSessao();
   if (!logadoComSucesso) return;
+
+  // Verifica se o usuário já passou pelo loading nessa sessão
+  if (sessionStorage.getItem('jaViuLoading')) {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) {
+        // Usa display none para sumir instantaneamente, sem efeito de transição
+        overlay.style.display = 'none'; 
+      }
+  }
 
   document.querySelectorAll(".tl-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
