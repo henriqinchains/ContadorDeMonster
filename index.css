@@ -1,3 +1,7 @@
+html.esconder-loading-instantaneo #loading-overlay {
+    display: none !important;
+}
+
 /* ==========================================================================
    1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS (THEME)
    ========================================================================== */
