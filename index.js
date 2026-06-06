@@ -100,7 +100,32 @@ function inicializarInterface(usuario) {
   }
 
   carregarFeed();
-  carregarRanking();
+  carregarRanking(); 
+}
+
+async function iniciarTimeline() {
+    // 1. Verifica o localStorage (Se não tiver, dá window.location pro login)
+    // OBS: Se redirecionar, o loading nunca some, mascarando a transição perfeitamente!
+    
+    // 2. Aguarda o seu banco de dados
+    await carregarFeed();
+    await carregarRanking();
+
+    // 3. Tudo carregado e renderizado? Tira a cortina!
+    ocultarLoading();
+}
+
+function ocultarLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        // Zera a opacidade para fazer a transição suave do CSS
+        overlay.style.opacity = '0';
+        
+        // Remove da tela para não atrapalhar os cliques do usuário
+        setTimeout(() => {
+            overlay.style.visibility = 'hidden';
+        }, 500); 
+    }
 }
 
 async function buscarAvatarEmSegundoPlano(usuario) {
