@@ -184,13 +184,12 @@ button:disabled {
 }
 
 .footer-login {
-  text-align: center;
-  margin-top: 40px;
-  padding: 20px;
-  border-top: 1px solid #333333;
-  position: relative;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  left: 0;
   z-index: 999;
-  background-color: #121212;
+  text-align: center;
 }
 
 .footer-login .disclaimer {
