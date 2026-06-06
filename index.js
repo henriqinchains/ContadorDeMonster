@@ -105,6 +105,8 @@ async function inicializarInterface(usuario) {
     carregarRanking()
   ]);
 
+  renderizarPosts(todasAvaliacoes);
+
   // Só chega nessa linha quando o feed e o ranking estiverem 100% prontos na tela.
   ocultarLoading(); 
 }
@@ -299,7 +301,6 @@ async function carregarFeed() {
     const avaliacoes = await resposta.json();
     todasAvaliacoes = avaliacoes;
     preencherComboboxUsuarios(todasAvaliacoes);
-    renderizarPosts(todasAvaliacoes);
   } catch (erro) {
     feedContainer.innerHTML = "<p>❌ Erro ao conectar com o servidor do Render.</p>";
     console.error(erro);
