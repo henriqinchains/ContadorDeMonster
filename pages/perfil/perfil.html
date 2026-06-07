@@ -56,11 +56,11 @@
     <div class="profile-container">
       <section class="profile-header glass-panel">
         <div class="avatar-wrapper">
-          <div class="profile-avatar-big" id="profileAvatarBig"></div>
-          <button id="btnTrocarFotoPerfil" class="btn btn-ghost btn-sm">
-            📷 Atualizar Foto
-          </button>
-          <input type="file" id="profileFileInput" accept="image/*" style="display: none" />
+          <input type="file" id="inputNovaFoto" accept="image/*" style="display: none;">
+          <div id="avatarPerfilBox" class="avatar-perfil-box">
+            <div id="overlayEditarFoto" class="overlay-editar">
+            📷 </div>
+          </div>
         </div>
 
         <div class="profile-info">
