@@ -49,7 +49,6 @@ function aplicarCacheImediato() {
   document.addEventListener("DOMContentLoaded", () => {
     const profileNameEl = document.getElementById("profileNameDisplay");
     const loggedUserEl = document.getElementById("loggedUser");
-    const emailDisplay = document.getElementById("profileEmailDisplay");
     const tituloStats = document.getElementById("tituloStatsUsuario");
     const avatarBox = document.getElementById('avatarPerfilBox');
     const inputFoto = document.getElementById('inputNovaFoto');
@@ -60,7 +59,6 @@ function aplicarCacheImediato() {
   
     if (!isMeuPerfil) {
       if (overlayEditar) overlayEditar.remove();
-      if (emailDisplay) emailDisplay.textContent = "Avaliador da Comunidade";
       if (tituloStats) tituloStats.textContent = `Desempenho de ${targetUser}`;
 
       if (!document.getElementById("btnVoltarPerfil")) {
@@ -140,8 +138,6 @@ function aplicarCacheImediato() {
           }
         });
       }
-      
-      if (emailDisplay) emailDisplay.textContent = "Avaliador da Comunidade";
       if (tituloStats) tituloStats.textContent = "Seu Desempenho";
     }
   });
