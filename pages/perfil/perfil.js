@@ -89,21 +89,58 @@ function aplicarCacheImediato() {
       });
 
     } else {
+
       // 1. Libera o hover e a mãozinha do mouse
-      avatarBox.classList.add('avatar-editavel');
+      if (avatarBox) avatarBox.classList.add('avatar-editavel');
+      
       // 2. Faz o clique na bolinha acionar o input invisível
-      avatarBox.addEventListener('click', () => {
-        inputFoto.click();
-      });
-      // 3. Captura quando o usuário escolhe a foto no computador/celular
-      inputFoto.addEventListener('change', async (event) => {
-        const arquivo = event.target.files[0];
-        if (arquivo) {
-            console.log("Arquivo selecionado:", arquivo.name);
-            atualizarAvatarPerfil(avatarSalvo);
-            atualizarAvatarNavbar();     
-        }
-      });
+      if (avatarBox && inputFoto) {
+        avatarBox.addEventListener('click', () => {
+          inputFoto.click();
+        });
+      }
+
+      // 3. Captura quando o usuário escolhe a foto e FAZ O UPLOAD
+      if (inputFoto) {
+        inputFoto.addEventListener('change', async (event) => {
+          const arquivo = event.target.files[0];
+          
+          if (arquivo) {
+            console.log("Arquivo selecionado, iniciando upload...");
+            
+            if (overlayEditar) overlayEditar.innerHTML = "⏳";
+            
+            const formData = new FormData();
+            formData.append("nome", usuarioLogado); // Pega do cache global
+            formData.append("fotoPerfil", arquivo);
+
+            try {
+              const resposta = await fetch("https://monster-reviews-api.onrender.com/api/usuarios/avatar", {
+                method: "POST",
+                body: formData,
+                credentials: "include",
+              });
+
+              const dados = await resposta.json();
+              
+              if (resposta.ok) {
+                sessionStorage.setItem(`cache_avatar_${usuarioLogado}`, dados.avatarUrl);
+                atualizarAvatarPerfil(dados.avatarUrl);
+                atualizarAvatarNavbar();
+              } else {
+                alert("Erro ao salvar a foto: " + dados.erro);
+              }
+            } catch (erro) {
+              console.error("Erro no envio do upload:", erro);
+              alert("Falha na conexão com o servidor.");
+            } finally {
+              // Volta o ícone normal da câmera
+              if (overlayEditar) overlayEditar.innerHTML = "📷";
+            }
+          }
+        });
+      }
+      
       if (emailDisplay) emailDisplay.textContent = "Avaliador da Comunidade";
       if (tituloStats) tituloStats.textContent = "Seu Desempenho";
     }
@@ -204,54 +241,12 @@ function inicializarStructurePerfil() {
     loggedUserEmailEl.textContent = emailLogado;
   }
 
-  const btnTrocarFoto = document.getElementById("btnTrocarFotoPerfil");
   const emailDisplay = document.getElementById("profileEmailDisplay");
 
   if (isMeuPerfil) {
     if (emailDisplay) emailDisplay.textContent = emailLogado || "Sem e-mail";
   }
-
-  const fileInput = document.getElementById("profileFileInput");
-  if (isMeuPerfil && btnTrocarFoto && fileInput) {
-    const novoInput = fileInput.cloneNode(true);
-    fileInput.parentNode.replaceChild(novoInput, fileInput);
-    btnTrocarFoto.onclick = () => novoInput.click();
-
-    novoInput.addEventListener("change", async (e) => {
-      const input = e.target;
-      if (input.files && input.files[0]) {
-        const textoOriginal = btnTrocarFoto.textContent;
-        btnTrocarFoto.textContent = "⏳ Enviando...";
-        btnTrocarFoto.disabled = true;
-
-        const formData = new FormData();
-        formData.append("nome", usuarioLogado);
-        formData.append("fotoPerfil", input.files[0]);
-
-        try {
-          const resposta = await fetch("https://monster-reviews-api.onrender.com/api/usuarios/avatar", {
-            method: "POST",
-            body: formData,
-            credentials: "include",
-          });
-
-          const dados = await resposta.json();
-          if (resposta.ok) {
-            sessionStorage.setItem(`cache_avatar_${usuarioLogado}`, dados.avatarUrl);
-            atualizarAvatarPerfil(dados.avatarUrl);
-            atualizarAvatarNavbar();
-          } else {
-            alert("Erro do servidor: " + dados.erro);
-          }
-        } catch (erro) {
-          console.error("Erro no envio:", erro);
-        } finally {
-          btnTrocarFoto.textContent = textoOriginal;
-          btnTrocarFoto.disabled = false;
-        }
-      }
-    });
-  }
+}
 
   carregarEstatisticas(targetUser);
 }
