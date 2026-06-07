@@ -7,6 +7,24 @@ let userEmail = sessionStorage.getItem("cache_email") || "";
 let todasAvaliacoes = [];
 const feedContainer = document.getElementById("feed-container");
 const cacheMemoriaAvatares = {};
+const listaSabores = [
+  "Original",
+  "Zero Sugar",
+  "Absolutely Zero",
+  "Ultra White",
+  "Ultra Violet",
+  "Ultra Strawberry Dreams",
+  "Ultra Watermelon",
+  "Ultra Fiesta Mango",
+  "Ultra Peachy Keen",
+  "Mango Loco",
+  "Pacific Punch",
+  "Khaotic",
+  "Pipeline Punch",
+  "Rio Punch",
+  "Dragon Ice Tea Limão",
+  "Dragon Ice Tea Pêssego",
+];
 
 // Renderiza o cache de sessão imediatamente para a Navbar nascer preenchida
 aplicarCacheImediato();
@@ -79,6 +97,31 @@ async function verificarSessao() {
 // ==========================================
 // 2. INICIALIZAÇÃO DA INTERFACE PÓS-LOGIN
 // ==========================================
+
+function popularSelectsDeSabor() {
+  // Pega os dois selects que existem na sua tela
+  const selectFiltro = document.getElementById("filtroSabor");
+  const selectModal = document.querySelector('select[name="sabor"]');
+
+  // Para cada sabor no array, ele cria a tag <option> e injeta na tela
+  listaSabores.forEach(sabor => {
+    // 1. Injeta no filtro
+    if (selectFiltro) {
+      const optionFiltro = document.createElement("option");
+      optionFiltro.value = sabor; 
+      optionFiltro.textContent = sabor;
+      selectFiltro.appendChild(optionFiltro);
+    }
+
+    // 2. Injeta no modal
+    if (selectModal) {
+      const optionModal = document.createElement("option");
+      optionModal.value = sabor;
+      optionModal.textContent = sabor;
+      selectModal.appendChild(optionModal);
+    }
+  });
+}
 
 async function inicializarInterface(usuario) {
   const loggedUserEl = document.getElementById("loggedUser");
@@ -181,7 +224,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       modalContainer.style.display = "flex";
       document.body.style.overflow = "hidden";
-      if (selectSabor) selectSabor.focus();
+      if (selectSabor){
+        popularSelectsDeSabor();
+        selectSabor.focus();
+      }
     });
   }
 
