@@ -24,6 +24,7 @@ const listaSabores = [
   "Rio Punch",
   "Dragon Ice Tea Limão",
   "Dragon Ice Tea Pêssego",
+  "Outro"
 ];
 
 // Renderiza o cache de sessão imediatamente para a Navbar nascer preenchida
@@ -99,26 +100,23 @@ async function verificarSessao() {
 // ==========================================
 
 function popularSelectsDeSabor() {
-  // Pega os dois selects que existem na sua tela
-  const selectFiltro = document.getElementById("filtroSabor");
-  const selectModal = document.querySelector('select[name="sabor"]');
+  // Pega os DATALISTS que criamos no HTML
+  const datalistFiltro = document.getElementById("listaSaboresFiltro");
+  const datalistModal = document.getElementById("listaSaboresModal");
 
-  // Para cada sabor no array, ele cria a tag <option> e injeta na tela
   listaSabores.forEach(sabor => {
-    // 1. Injeta no filtro
-    if (selectFiltro) {
+    // 1. Injeta no datalist do filtro
+    if (datalistFiltro) {
       const optionFiltro = document.createElement("option");
       optionFiltro.value = sabor; 
-      optionFiltro.textContent = sabor;
-      selectFiltro.appendChild(optionFiltro);
+      datalistFiltro.appendChild(optionFiltro);
     }
 
-    // 2. Injeta no modal
-    if (selectModal) {
+    // 2. Injeta no datalist do modal
+    if (datalistModal) {
       const optionModal = document.createElement("option");
       optionModal.value = sabor;
-      optionModal.textContent = sabor;
-      selectModal.appendChild(optionModal);
+      datalistModal.appendChild(optionModal);
     }
   });
 }
