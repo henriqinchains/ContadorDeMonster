@@ -241,12 +241,6 @@ function inicializarStructurePerfil() {
   if (loggedUserEmailEl && emailLogado) {
     loggedUserEmailEl.textContent = emailLogado;
   }
-
-  const emailDisplay = document.getElementById("profileEmailDisplay");
-
-  if (isMeuPerfil) {
-    if (emailDisplay) emailDisplay.textContent = emailLogado || "Sem e-mail";
-  }
   carregarEstatisticas(targetUser);
 }
 
