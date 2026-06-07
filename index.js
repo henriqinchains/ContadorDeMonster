@@ -294,26 +294,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (btnAplicar) {
     btnAplicar.addEventListener("click", () => {
-      const busca = document.getElementById("filtroBusca").value.toLowerCase();
+      // Pega APENAS os 3 valores que ainda existem na tela
       const apenasMinhas = document.getElementById("checkMeusPosts").checked;
       const sabor = document.getElementById("filtroSabor").value;
-      const notaMinima = parseFloat(document.getElementById("filtroNota").value) || 0;
       const ordem = document.getElementById("filtroOrdem").value;
-      const tagAtiva = document.querySelector("#tagGroupValeu .tag.active");
-      const valeuFiltro = tagAtiva ? tagAtiva.getAttribute("data-value") : "todos";
 
+      // Filtra a lista
       let postsFiltrados = todasAvaliacoes.filter((post) => {
         if (apenasMinhas && post.sujeito !== loggedUser) return false;
-        const textoPost = `${post.sujeito} ${post.review || ""}`.toLowerCase();
-        if (busca && !textoPost.includes(busca)) return false;
         if (sabor && post.sabor !== sabor) return false;
-        if (post.nota < notaMinima) return false;
-        if (valeuFiltro !== "todos") {
-          if (post.valeu_a_pena !== (valeuFiltro === "true")) return false;
-        }
         return true;
       });
 
+      // Ordena a lista
       postsFiltrados.sort((a, b) => {
         if (ordem === "recentes") return new Date(b.createdAt) - new Date(a.createdAt);
         if (ordem === "antigos") return new Date(a.createdAt) - new Date(b.createdAt);
@@ -322,20 +315,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (ordem === "menor_preco") return a.valor - b.valor;
         return 0;
       });
+      
       renderizarPosts(postsFiltrados);
     });
   }
 
   if (btnLimpar) {
     btnLimpar.addEventListener("click", () => {
-      document.getElementById("filtroBusca").value = "";
       document.getElementById("checkMeusPosts").checked = false;
       document.getElementById("filtroSabor").value = "";
-      document.getElementById("filtroNota").value = "";
       document.getElementById("filtroOrdem").value = "recentes";
-      document.querySelectorAll("#tagGroupValeu .tag").forEach((t) => t.classList.remove("active"));
-      const tagTodos = document.querySelector("#tagGroupValeu .tag[data-value='todos']");
-      if (tagTodos) tagTodos.classList.add("active");
+      
       renderizarPosts(todasAvaliacoes);
     });
   }
