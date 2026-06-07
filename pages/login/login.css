@@ -212,3 +212,36 @@ button:disabled {
 .footer-login .creditos a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  /* 1. Libera o scroll! Se o teclado abrir, o usuário PRECISA conseguir rolar a tela */
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* 2. Joga o card mais pro topo para não ser engolido pelo teclado */
+  .page-shell {
+    padding: 15px;
+    align-items: flex-start; /* Tira do centro exato e joga pra cima */
+    padding-top: 8vh; 
+  }
+
+  /* 3. Reduz as bordas internas para os inputs respirarem em telas muito finas */
+  .login-card {
+    padding: 24px 20px; 
+  }
+
+  /* 4. Ajusta a fonte do título para não quebrar em três linhas */
+  .login-card h1, .login-card h1 span {
+    font-size: 1.7rem;
+  }
+
+  /* 5. Salva o Footer: tira ele da posição absoluta para não atropelar o formulário */
+  .footer-login {
+    position: relative;
+    bottom: auto;
+    margin-top: 40px;
+    padding-bottom: 20px;
+  }
+}
