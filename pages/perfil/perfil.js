@@ -50,15 +50,16 @@ function aplicarCacheImediato() {
     const profileNameEl = document.getElementById("profileNameDisplay");
     const loggedUserEl = document.getElementById("loggedUser");
     const emailDisplay = document.getElementById("profileEmailDisplay");
-
-    const btnTrocarFoto = document.getElementById("btnTrocarFotoPerfil");
     const tituloStats = document.getElementById("tituloStatsUsuario");
+    const avatarBox = document.getElementById('avatarPerfilBox');
+    const inputFoto = document.getElementById('inputNovaFoto');
+    const overlayEditar = document.getElementById('overlayEditarFoto');
 
     if (profileNameEl) profileNameEl.textContent = targetUser || "Carregando...";
     if (loggedUserEl) loggedUserEl.textContent = usuarioLogado;
-
+  
     if (!isMeuPerfil) {
-      if (btnTrocarFoto) btnTrocarFoto.style.display = "none";
+      if (overlayEditar) overlayEditar.remove();
       if (emailDisplay) emailDisplay.textContent = "Avaliador da Comunidade";
       if (tituloStats) tituloStats.textContent = `Desempenho de ${targetUser}`;
 
@@ -88,14 +89,24 @@ function aplicarCacheImediato() {
       });
 
     } else {
-      if (btnTrocarFoto) btnTrocarFoto.style.display = "inline-block";
-      if (emailDisplay) emailDisplay.textContent = emailLogado || "Sem e-mail";
+      // 1. Libera o hover e a mãozinha do mouse
+      avatarBox.classList.add('avatar-editavel');
+      // 2. Faz o clique na bolinha acionar o input invisível
+      avatarBox.addEventListener('click', () => {
+        inputFoto.click();
+      });
+      // 3. Captura quando o usuário escolhe a foto no computador/celular
+      inputFoto.addEventListener('change', async (event) => {
+        const arquivo = event.target.files[0];
+        if (arquivo) {
+            console.log("Arquivo selecionado:", arquivo.name);
+            atualizarAvatarPerfil(avatarSalvo);
+            atualizarAvatarNavbar();     
+        }
+      });
+      if (emailDisplay) emailDisplay.textContent = "Avaliador da Comunidade";
       if (tituloStats) tituloStats.textContent = "Seu Desempenho";
     }
-
-    const avatarSalvo = sessionStorage.getItem(`cache_avatar_${targetUser}`);
-    atualizarAvatarPerfil(avatarSalvo);
-    atualizarAvatarNavbar();
   });
 }
 
