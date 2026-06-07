@@ -205,7 +205,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Responsividade: Quebra para 1 coluna no celular */
+/* Responsividade */
 @media (max-width: 850px) {
   .dashboard-split { flex-direction: column; }
   .profile-header { flex-direction: column; text-align: center; }
@@ -216,3 +216,28 @@
   .stats-grid-2x2 { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 768px) {
+  /* 1. Otimiza o uso de espaço na tela (menos margem inútil) */
+  .profile-container {
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+  
+  .profile-header {
+    padding: 20px;
+  }
+
+  /* 2. Ajusta o título do nome para não vazar a tela em nomes gigantes */
+  .profile-info h2 {
+    font-size: 1.7rem;
+  }
+
+  /* 3. A Mágica do Touch: O botão da câmera fica visível de forma elegante */
+  .avatar-editavel .overlay-editar {
+    opacity: 1; /* Força a câmera a aparecer sempre no mobile */
+    background: linear-gradient(transparent 60%, rgba(0, 0, 0, 0.8) 100%); /* Gradiente escuro só embaixo */
+    align-items: flex-end; /* Joga o ícone da câmera para a base da bolinha */
+    padding-bottom: 12px;
+    font-size: 1.4rem;
+  }
+}
