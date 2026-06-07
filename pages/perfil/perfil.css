@@ -49,10 +49,12 @@
   gap: 15px;
 }
 
-#profileAvatarBig {
+.avatar-perfil-box {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  position: relative;
+  overflow: hidden;
   background-color: var(--monster-green);
   box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
   color: var(--bg-main);
@@ -70,9 +72,20 @@
   background-repeat: no-repeat; 
 }
 
-#btnTrocarFotoPerfil {
-  font-size: 0.8rem;
-  padding: 8px 16px;
+.overlay-editar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Começa invisível */
+    transition: opacity 0.3s ease; /* Animação suave */
 }
 
 .profile-info h2 {
