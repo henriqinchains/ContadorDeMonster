@@ -152,23 +152,28 @@ function aplicarCacheImediato() {
 // ==========================================================================
 
 function atualizarAvatarPerfil(source) {
-  const avatarBig = document.getElementById("profileAvatarBig");
-  if (!avatarBig) return;
+  const avatarBox = document.getElementById("avatarPerfilBox");
+  if (!avatarBox) return;
+
+  const overlay = document.getElementById("overlayEditarFoto");
 
   if (source) {
-    // ⚡ Blindagem aplicada no avatar grande da página de perfil
-    avatarBig.style.background = "none";
-    avatarBig.style.backgroundColor = "#1f2833";
-    avatarBig.style.backgroundSize = "cover";
-    avatarBig.style.backgroundPosition = "center";
-    avatarBig.style.backgroundRepeat = "no-repeat";
-    avatarBig.style.backgroundImage = `url(${source})`;
-    avatarBig.textContent = "";
+    avatarBox.style.background = "none";
+    avatarBox.style.backgroundColor = "#1f2833";
+    avatarBox.style.backgroundSize = "cover";
+    avatarBox.style.backgroundPosition = "center";
+    avatarBox.style.backgroundRepeat = "no-repeat";
+    avatarBox.style.backgroundImage = `url(${source})`;
+    
+    avatarBox.innerHTML = "";
+    if (overlay) avatarBox.appendChild(overlay);
+
   } else {
     const iniciaisTarget = targetUser ? targetUser.substring(0, 2).toUpperCase() : "US";
-    avatarBig.textContent = iniciaisTarget;
-    avatarBig.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
-    avatarBig.style.backgroundImage = "none";
+    avatarBox.style.background = "linear-gradient(135deg,#e74c3c,#c0392b)";
+    avatarBox.style.backgroundImage = "none";
+    avatarBox.innerHTML = iniciaisTarget;
+    if (overlay) avatarBox.appendChild(overlay);
   }
 }
 
