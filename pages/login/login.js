@@ -2,19 +2,15 @@ const API_URL = "https://monster-reviews-api.onrender.com/api";
 const footerLogin = document.querySelector('.footer-login');
 let tokenTemporario = "";
 
-// ==========================================
-// FUNÇÃO AUXILIAR DE CHECAGEM DE SESSÃO
-// ==========================================
+//CHECAR SE O USUÁRIO JÁ ESTÁ LOGADO
 async function checarLogin() {
   try {
-    // Agora ele bate na rota /me mandando os cookies de forma segura
     const response = await fetch(`${API_URL}/auth/me`, {
       method: "GET",
       credentials: "include",
     });
 
     if (response.ok) {
-      // Caminho corrigido! Direto pra raiz.
       window.location.href = "../../index.html";
     }
   } catch (error) {
@@ -31,9 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReset();
 });
 
-// ==========================================
-// FUNÇÕES DE TRANSIÇÃO DE TELA (SPA)
-// ==========================================
+// TRANSFORMACOES DE TELA
 function Switch() {
   if (footerLogin) footerLogin.style.display = 'none';
   document.getElementById("login-section").style.display = "none";
@@ -73,9 +67,8 @@ function SwitchBackFromRecovery() {
   document.getElementById("login-section").style.display = "block";
 }
 
-// ==========================================
-// LÓGICA DE LOGIN
-// ==========================================
+
+// login
 function initLogin() {
   const form = document.getElementById("login-form");
   const button = document.getElementById("login-button");
@@ -110,7 +103,7 @@ function initLogin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ login: usuario, password: senha }),
-        credentials: "include", // Essencial para receber o Cookie do Render
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -141,9 +134,7 @@ function initLogin() {
   });
 }
 
-// ==========================================
-// LÓGICA DE CADASTRO
-// ==========================================
+//REALIZAR CADASTRO
 function initCadastro() {
   const formCadastro = document.getElementById("formCadastro");
   if (!formCadastro) return;
@@ -184,23 +175,21 @@ function initCadastro() {
           email: email,
           password: senha,
         }),
-        credentials: "include", // Essencial para receber o Cookie do auto-login
+        credentials: "include",
       });
 
       const dados = await resposta.json();
 
       if (resposta.ok) {
-        // Salva os dados estéticos pro Front-end
-        localStorage.setItem("loggedUser", dados.login);
-        localStorage.setItem("loggedEmail", dados.usuario.email);
-
+        if (dados.avatarUrl) {
+          localStorage.setItem(`avatar_${dados.email}`, dados.avatarUrl);
+        }
         message.textContent = `✅ ${dados.mensagem}`;
         message.style.color = "#00ff66";
 
         formCadastro.reset();
 
         window.setTimeout(() => {
-          // Caminho corrigido!
           window.location.href = "../../index.html";
         }, 2000);
       } else {
@@ -220,9 +209,7 @@ function initCadastro() {
   });
 }
 
-// ==========================================
-// LÓGICA DE PEDIR RECUPERAÇÃO (ENVIAR EMAIL)
-// ==========================================
+//INICIAR RECUPERACAO DE SENHA
 function initRecuperacao() {
   const formRecuperacao = document.getElementById("formRecuperacao");
   const emailInput = document.getElementById("email-recuperacao");
@@ -278,9 +265,7 @@ function initRecuperacao() {
   });
 }
 
-// ==========================================
-// LÓGICA DE DIGITAR O PIN E NOVA SENHA
-// ==========================================
+//INSERIR RECUPERACAO DE SENHA
 function initReset() {
   const formReset = document.getElementById("formResetSenha");
   const inputCodigo = document.getElementById("codigo-pin");

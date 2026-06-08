@@ -251,34 +251,31 @@ button:disabled {
    AJUSTE MOBILE
    ========================================================================== */
 @media (max-width: 768px) {
-  /* 1. A Mágica do 100dvh e do Grid */
   body {
     display: grid;
-    grid-template-rows: 1fr auto; /* O form ocupa o que puder, o footer ocupa só o finalzinho */
-    min-height: 100dvh; /* Ignora as barras do navegador mobile */
+    grid-template-rows: 1fr auto;
+    min-height: 100dvh; 
     overflow-y: auto;
     overflow-x: hidden;
   }
 
-  /* 2. O container agora se alinha perfeitamente ao Grid */
+
   .page-shell {
-    min-height: unset; /* Mata a regra antiga que esticava demais */
+    min-height: unset;
     display: flex;
-    align-items: center; /* Mantém o form no meio do espaço disponível */
+    justify-content: center; 
     padding: 15px;
   }
 
-  /* 3. Ajustes internos para caber tudo limpo */
   .login-card {
     padding: 24px 20px; 
-    margin-top: -30px; /* Puxa ele um tiquinho pra cima pro teclado ter espaço */
+    margin-top: -25px;
   }
 
   .login-card h1, .login-card h1 span {
     font-size: 1.7rem;
   }
 
-  /* 4. Footer comportado no chão */
   .footer-login {
     position: relative;
     bottom: auto;
