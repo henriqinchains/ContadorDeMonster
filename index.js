@@ -388,6 +388,15 @@ function renderizarPosts(arrayAvaliacoes) {
     const avatarElementId = `avatar-feed-${post._id}`;
     const iniciais = post.sujeito ? post.sujeito.substring(0, 2).toUpperCase() : "US";
 
+    const arrayLikes = post.likes || [];
+    const jaCurtiu = arrayLikes.includes(loggedUser); // Verifica se o usuário logado está no array
+    
+    const corIcone = jaCurtiu ? '#ff4d5a' : 'currentColor';
+    const fillIcone = jaCurtiu ? '#ff4d5a' : 'none';
+    const corTexto = jaCurtiu ? '#ff4d5a' : 'var(--text-muted)';
+    const bgBotao = jaCurtiu ? 'rgba(255, 77, 90, 0.08)' : 'transparent';
+    const numLikes = arrayLikes.length;
+
     const postArticle = document.createElement("article");
     postArticle.className = "post-card";
     postArticle.innerHTML = `
@@ -425,9 +434,11 @@ function renderizarPosts(arrayAvaliacoes) {
       </div>
       <div class="post-desc" style="font-family: 'Nova Square';">${post.review || "Sem descrição."}</div>
       <div class="post-footer" style="display: flex;  justify-content: space-between; align-items: center;">
-        <button class="post-action">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          0
+        <button class="post-action btn-curtir" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao};">
+          <svg viewBox="0 0 24 24" fill="${fillIcone}" stroke="${corIcone}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; transition: all 0.2s;">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="contador-likes">${numLikes}</span>
         </button>
         ${post.sujeito === loggedUser || userRole === "admin" ? `<button class="post-action" onclick="deletarPost('${post._id}')" style="color: #ff4d4d; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Excluir</button>` : ""}
       </div>
@@ -528,6 +539,60 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
     el.style.backgroundImage = "none";
   }
 }
+
+window.toggleCurtida = async function(btn, postId) {
+  const svg = btn.querySelector('svg');
+  const span = btn.querySelector('.contador-likes');
+  let count = parseInt(span.textContent);
+
+  const isCurtido = svg.style.fill === 'rgb(255, 77, 90)' || svg.style.fill === '#ff4d5a';
+
+  if (!isCurtido) {
+    svg.style.fill = '#ff4d5a';
+    svg.style.stroke = '#ff4d5a';
+    btn.style.color = '#ff4d5a';
+    btn.style.backgroundColor = 'rgba(255, 77, 90, 0.08)';
+    span.textContent = count + 1;
+  } else {
+    svg.style.fill = 'none';
+    svg.style.stroke = 'currentColor';
+    btn.style.color = 'var(--text-muted)';
+    btn.style.backgroundColor = 'transparent';
+    span.textContent = count - 1;
+  }
+
+  // Dispara a rota do servidor
+  try {
+    const resposta = await fetch(`https://monster-reviews-api.onrender.com/api/avaliacoes/${postId}/curtir`, {
+      method: "POST",
+      credentials: "include" // Manda o authToken pro backend saber quem está curtindo
+    });
+
+    if (!resposta.ok) {
+      const erroData = await resposta.json();
+      throw new Error(erroData.erro || "Falha ao curtir no servidor");
+    }
+  } catch (erro) {
+    console.error("❌ Erro na sincronização da curtida:", erro);
+    
+    // Se a API falhar (ex: token expirado), desfaz a animação
+    if (!isCurtido) {
+      svg.style.fill = 'none';
+      svg.style.stroke = 'currentColor';
+      btn.style.color = 'var(--text-muted)';
+      btn.style.backgroundColor = 'transparent';
+      span.textContent = count;
+    } else {
+      svg.style.fill = '#ff4d5a';
+      svg.style.stroke = '#ff4d5a';
+      btn.style.color = '#ff4d5a';
+      btn.style.backgroundColor = 'rgba(255, 77, 90, 0.08)';
+      span.textContent = count;
+    }
+    
+    alert("Não foi possível registrar a curtida. Verifique sua conexão ou faça login novamente.");
+  }
+};
 
 async function deletarPost(id) {
   if (!confirm("Tem certeza que quer apagar essa review, monstro?")) return;
