@@ -551,8 +551,16 @@ window.toggleCurtida = async function(btn, postId) {
     svg.style.fill = '#ff4d5a';
     svg.style.stroke = '#ff4d5a';
     btn.style.color = '#ff4d5a';
-    btn.style.backgroundColor = 'rgba(255, 77, 90, 0.08)';
+    btn.style.backgroundColor = 'rgba(255, 77, 90, 0.08)'; // Acende o quadradinho
     span.textContent = count + 1;
+
+    // A MÁGICA DO FLASH: Apaga o quadradinho depois de 1 segundo
+    setTimeout(() => {
+      // Checa se o botão ainda tá curtido (vai que o cara clicou de novo rápido)
+      if (btn.classList.contains('curtido')) {
+        btn.style.backgroundColor = 'transparent';
+      }
+    }, 1000);
   } else {
     svg.style.fill = 'none';
     svg.style.stroke = 'currentColor';
