@@ -284,10 +284,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const dados = await resposta.json();
         if (resposta.ok) {
           const audioLatinha = new Audio('./src/audio/latinha.mp3');
-          audioLatinha.play();
-          alert("Review postada com sucesso! 🔋");
-          fecharModal();
-          location.reload();
+          audioLatinha.play().catch(erro => console.warn("Navegador bloqueou o áudio:", erro));
+          setTimeout(() => {
+            alert("Review postada com sucesso! 🔋");
+            fecharModal();
+            location.reload();
+          }, 1000);
         } else {
           alert(`Erro: ${dados.erro || "Falha ao postar"}`);
         }
