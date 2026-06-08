@@ -115,6 +115,7 @@ const AvaliacaoSchema = new mongoose.Schema(
     valeu_a_pena: { type: Boolean, required: true },
     review: { type: String, required: false },
     foto_url: { type: String, required: true },
+    likes: { type: [String], default: [] }
   },
   { timestamps: true },
 );
@@ -352,6 +353,8 @@ app.post("/api/avaliacoes", upload.single("foto"), async (req, res) => {
   }
 });
 
+
+
 // EXCLUIR AVALIAÇÃO (SEGURA CONTRA MANIPULAÇÕES)
 app.delete("/api/avaliacoes/:id", async (req, res) => {
   try {
@@ -416,6 +419,58 @@ const obterPublicIdDaUrl = (url) => {
   // Retorna "pasta/arquivo" (ajuste se você não usar pastas no Cloudinary)
   return `${pasta}/${arquivoSemExtensao}`;
 };
+
+// ==========================================
+// ROTA DE CURTIDAS
+// ==========================================
+app.post("/api/avaliacoes/:id/curtidas", async (req, res) => {
+  try {
+    // 1. Autenticação Padrão do Sistema
+    const token = req.cookies.authToken;
+    if (!token) {
+      return res.status(401).json({ erro: "Você precisa estar logado para curtir, monstro!" });
+    }
+    
+    // Descriptografa o token para saber quem está clicando
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const usuarioLogado = decoded.nome; 
+    const idAvaliacao = req.params.id;
+
+    // 2. Busca a avaliação no banco
+    const avaliacao = await Avaliacao.findById(idAvaliacao);
+    if (!avaliacao) {
+      return res.status(404).json({ erro: "Avaliação não encontrada." });
+    }
+
+    // 3. A Mágica do Toggle (Dar ou Tirar Like)
+    const indexLike = avaliacao.likes.indexOf(usuarioLogado);
+
+    if (indexLike === -1) {
+      // Se retornou -1, o usuário NÃO está no array. Então damos o push (Like).
+      avaliacao.likes.push(usuarioLogado);
+    } else {
+      // Se achou a posição, o usuário JÁ está no array. Damos o splice para arrancar (Descurtir).
+      avaliacao.likes.splice(indexLike, 1);
+    }
+
+    // Salva a alteração no MongoDB
+    await avaliacao.save();
+
+    // 4. Retorna a resposta para o Front-end
+    return res.status(200).json({
+      mensagem: indexLike === -1 ? "Like adicionado!" : "Like removido!",
+      likes: avaliacao.likes
+    });
+
+  } catch (erro) {
+    console.error("❌ Erro ao curtir a avaliação:", erro);
+    // Trata se o token estiver expirado ou corrompido
+    if (erro.name === "JsonWebTokenError" || erro.name === "TokenExpiredError") {
+      return res.status(401).json({ erro: "Sessão expirada. Faça login novamente." });
+    }
+    return res.status(500).json({ erro: "Erro interno ao processar a curtida." });
+  }
+});
 
 // ==========================================
 // AVATAR, RANKING & DASHBOARD
