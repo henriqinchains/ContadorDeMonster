@@ -8,6 +8,10 @@ if (btnHamburguer && navLinks) {
   });
 }
 
+function abrirModal() {
+  const modal = document.getElementById("modalSobre");
+
+}
 // ==========================================================================
 // CONFIGURAÇÕES INICIAIS E CACHE IMEDIATO (ANTI-PISCADA)
 // ==========================================================================
@@ -118,7 +122,7 @@ function popularSelectsDeSabor() {
     // 1. Injeta no datalist do filtro
     if (datalistFiltro) {
       const optionFiltro = document.createElement("option");
-      optionFiltro.value = sabor; 
+      optionFiltro.value = sabor;
       datalistFiltro.appendChild(optionFiltro);
     }
 
@@ -150,7 +154,7 @@ async function inicializarInterface(usuario) {
       buscarAvatarEmSegundoPlano(usuario.login);
     }
   }
-  
+
   await Promise.all([
     carregarFeed(),
     carregarRanking()
@@ -159,23 +163,23 @@ async function inicializarInterface(usuario) {
   renderizarPosts(todasAvaliacoes);
 
   // Só chega nessa linha quando o feed e o ranking estiverem 100% prontos na tela.
-  ocultarLoading(); 
+  ocultarLoading();
 }
 
 function ocultarLoading() {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        // Zera a opacidade para a transição suave
-        overlay.style.opacity = '0';
-        
-        setTimeout(() => {
-            overlay.style.visibility = 'hidden';
-            overlay.style.display = 'none'; // Garante que saiu do fluxo
-        }, 500); 
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    // Zera a opacidade para a transição suave
+    overlay.style.opacity = '0';
 
-        // Grava que o usuário já viu a tela de loading hoje
-        sessionStorage.setItem('jaViuLoading', 'true');
-    }
+    setTimeout(() => {
+      overlay.style.visibility = 'hidden';
+      overlay.style.display = 'none'; // Garante que saiu do fluxo
+    }, 500);
+
+    // Grava que o usuário já viu a tela de loading hoje
+    sessionStorage.setItem('jaViuLoading', 'true');
+  }
 }
 
 async function buscarAvatarEmSegundoPlano(usuario) {
@@ -212,9 +216,9 @@ async function buscarAvatarEmSegundoPlano(usuario) {
 document.addEventListener("DOMContentLoaded", async () => {
   const logadoComSucesso = await verificarSessao();
   if (!logadoComSucesso) return;
-  
+
   popularSelectsDeSabor();
-  
+
   document.querySelectorAll(".tl-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       document.querySelectorAll(".tl-tab").forEach((t) => t.classList.remove("active"));
@@ -234,7 +238,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       modalContainer.style.display = "flex";
       document.body.style.overflow = "hidden";
-      if (selectSabor){
+      if (selectSabor) {
         selectSabor.focus();
       }
     });
@@ -321,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (ordem === "menor_preco") return a.valor - b.valor;
         return 0;
       });
-      
+
       renderizarPosts(postsFiltrados);
     });
   }
@@ -331,7 +335,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("checkMeusPosts").checked = false;
       document.getElementById("filtroSabor").value = "";
       document.getElementById("filtroOrdem").value = "recentes";
-      
+
       renderizarPosts(todasAvaliacoes);
     });
   }
@@ -459,7 +463,7 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
   if (cacheMemoriaAvatares[usuario]) {
     // Se já tem um post buscando essa foto, este post não faz nada. 
     // Ele apenas espera a primeira requisição terminar e pintar a tela.
-    if (cacheMemoriaAvatares[usuario] === "buscando") return; 
+    if (cacheMemoriaAvatares[usuario] === "buscando") return;
 
     if (cacheMemoriaAvatares[usuario] !== "none_found") {
       el.style.background = "none";
@@ -562,20 +566,24 @@ async function carregarRanking() {
 const modal = document.getElementById("modalSobre");
 const btn = document.getElementById("btnSobre");
 const span = document.getElementById("fecharModal");
-
+const btnHamSobre = document.getElementById("sobreProjetoBtnHam");
 // Quando clica no botão do Nav, abre
-btn.onclick = function() {
+btn.onclick = function () {
   modal.style.display = "block";
 }
 
 // Quando clica no X, fecha
-span.onclick = function() {
+span.onclick = function () {
   modal.style.display = "none";
 }
 
 // Se o cara clicar fora da caixinha (no fundo escuro), fecha
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
+}
+
+function abrirModal() {
+  modal.style.display = "block";
 }
