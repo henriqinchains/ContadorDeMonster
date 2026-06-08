@@ -422,24 +422,35 @@ function renderizarPosts(arrayAvaliacoes) {
           <span>${dataEHoraFinal}</span>
         </div>
       </div>
-      <div class="post-image">
-        <img src="${post.foto_url}" alt="Foto do Monster" style="width:100%; max-height:400px; object-fit:contain; border-radius:4px;">
+
+      <div class="post-image" style="width: 100%; margin: 15px 0;">
+        <img src="${post.foto_url}" alt="Foto do Monster" style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 8px; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
       </div>
-      <div class="post-info">
+
+      <div class="post-info" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
         <div class="info-item"><span class="info-label">Sabor</span><span class="info-value">${post.sabor}</span></div>
         <div class="info-item"><span class="info-label">Valor</span><span class="info-value">R$ ${Number(post.valor).toFixed(2).replace(".", ",")}</span></div>
         <div class="info-item"><span class="info-label">Nota</span><span class="info-value">${Number(post.nota).toFixed(1)} <span class="nota-stars">${estrelas}</span></span></div>
         <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
       </div>
-      <div class="post-desc" style="font-family: 'Nova Square';">${post.review || "Sem descrição."}</div>
-      <div class="post-footer" style="display: flex;  justify-content: space-between; align-items: center;">
-        <button class="${classeBotao}" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao};">
-          <svg viewBox="0 0 24 24" fill="${fillIcone}" stroke="${corIcone}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; transition: all 0.2s;">
+
+      <div class="post-desc" style="font-family: 'Nova Square'; margin-bottom: 15px; color: var(--text-color); line-height: 1.4;">
+        ${post.review || "Sem descrição."}
+      </div>
+
+      <div class="post-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+        <button class="${classeBotao}" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao}; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; padding: 6px 12px; border-radius: 6px; transition: all 0.2s;">
+          <svg viewBox="0 0 24 24" fill="${fillIcone}" stroke="${corIcone}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
           <span class="contador-likes">${numLikes}</span>
         </button>
-        ${post.sujeito === loggedUser || userRole === "admin" ? `<button class="post-action" onclick="deletarPost('${post._id}')" style="color: #ff4d4d; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Excluir</button>` : ""}
+        ${post.sujeito === loggedUser || userRole === "admin" ? `
+          <button class="post-action" onclick="deletarPost('${post._id}')" style="color: #ff4d4d; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold; padding: 6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Excluir
+          </button>
+        ` : ""}
       </div>
     `;
     feedContainer.appendChild(postArticle);
