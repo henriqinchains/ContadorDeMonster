@@ -1005,24 +1005,6 @@ textarea {
 }
 
 /* MODAL INFO */
-#btnSobre {
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #4CAF50;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-#btnSobre:hover {
-  background-color: #4CAF50;
-  color: #121212;
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-}
 
 .modal-oculto {
   display: none; 
