@@ -310,11 +310,11 @@ document.addEventListener("click", (e) => {
 });
 
 const modal = document.getElementById("modalSobre");
-const btn = document.getElementById("btnSobre");
 const span = document.getElementById("fecharModal");
+const btnHamSobre = document.getElementById("sobreProjetoBtnHam");
 
 // Quando clica no botão do Nav, abre
-btn.onclick = function() {
+btnHamSobre.onclick = function() {
   modal.style.display = "block";
 }
 
