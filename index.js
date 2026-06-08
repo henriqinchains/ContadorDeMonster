@@ -434,7 +434,7 @@ function renderizarPosts(arrayAvaliacoes) {
         <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
       </div>
 
-      <div class="post-desc" style="font-family: 'Nova Square'; margin-bottom: 15px; color: var(--text-color); line-height: 1.4;">
+      <div class="post-desc" style="font-family: 'Nova Square'; margin-bottom: 15px; color: var(--text-color); line-height: 1.4; text-indent: 0; text-align: left; white-space: pre-wrap;">
         ${post.review || "Sem descrição."}
       </div>
 
