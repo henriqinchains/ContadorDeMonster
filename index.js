@@ -389,12 +389,15 @@ function renderizarPosts(arrayAvaliacoes) {
     const iniciais = post.sujeito ? post.sujeito.substring(0, 2).toUpperCase() : "US";
 
     const arrayLikes = post.likes || [];
-    const jaCurtiu = arrayLikes.includes(loggedUser); // Verifica se o usuário logado está no array
+    const jaCurtiu = arrayLikes.includes(loggedUser); 
+    
+    // ⚡ A MÁGICA: Adiciona a classe 'curtido' se ele já deu like
+    const classeBotao = jaCurtiu ? 'post-action btn-curtir curtido' : 'post-action btn-curtir';
     
     const corIcone = jaCurtiu ? '#ff4d5a' : 'currentColor';
     const fillIcone = jaCurtiu ? '#ff4d5a' : 'none';
     const corTexto = jaCurtiu ? '#ff4d5a' : 'var(--text-muted)';
-    const bgBotao = 'transparent';
+    const bgBotao = 'transparent'; // Nasce sempre transparente
     const numLikes = arrayLikes.length;
 
     const postArticle = document.createElement("article");
@@ -434,7 +437,7 @@ function renderizarPosts(arrayAvaliacoes) {
       </div>
       <div class="post-desc" style="font-family: 'Nova Square';">${post.review || "Sem descrição."}</div>
       <div class="post-footer" style="display: flex;  justify-content: space-between; align-items: center;">
-        <button class="post-action btn-curtir" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao};">
+        <button class="${classeBotao}" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao};">
           <svg viewBox="0 0 24 24" fill="${fillIcone}" stroke="${corIcone}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; transition: all 0.2s;">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
@@ -545,23 +548,26 @@ window.toggleCurtida = async function(btn, postId) {
   const span = btn.querySelector('.contador-likes');
   let count = parseInt(span.textContent);
 
-  const isCurtido = svg.style.fill === 'rgb(255, 77, 90)' || svg.style.fill === '#ff4d5a';
+  // 1. Verifica pela CLASSE (100% à prova de falhas)
+  const isCurtido = btn.classList.contains('curtido');
 
+  // 2. Atualização Otimista
   if (!isCurtido) {
+    btn.classList.add('curtido'); // Trava o botão como curtido
     svg.style.fill = '#ff4d5a';
     svg.style.stroke = '#ff4d5a';
     btn.style.color = '#ff4d5a';
-    btn.style.backgroundColor = 'rgba(255, 77, 90, 0.08)'; // Acende o quadradinho
+    btn.style.backgroundColor = 'rgba(255, 77, 90, 0.08)';
     span.textContent = count + 1;
 
-    // A MÁGICA DO FLASH: Apaga o quadradinho depois de 1 segundo
     setTimeout(() => {
-      // Checa se o botão ainda tá curtido (vai que o cara clicou de novo rápido)
       if (btn.classList.contains('curtido')) {
         btn.style.backgroundColor = 'transparent';
       }
     }, 1000);
+
   } else {
+    btn.classList.remove('curtido'); // Destrava o botão
     svg.style.fill = 'none';
     svg.style.stroke = 'currentColor';
     btn.style.color = 'var(--text-muted)';
