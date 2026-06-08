@@ -1141,7 +1141,18 @@ textarea {
    ========================================================================== */
 @media (max-width: 720px) {
   .grid-two { grid-template-columns: 1fr; }
-  .modal-card { width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; border: none; padding: 24px; }
+  
+  /* Modal de Vidro Responsivo e Dinâmico */
+  .modal-card { 
+    width: 100%; 
+    height: 100dvh; /* Calcula o tamanho real da tela sem as barras do navegador */
+    max-height: 100dvh; 
+    border-radius: 0; 
+    border: none; 
+    padding: 24px 24px 80px 24px; /* O 80px no final garante que o botão não seja engolido */
+    overflow-y: auto; /* Deixa rolar liso se o teclado abrir */
+  }
+  
   .footer { flex-direction: column; }
   .button, .hint { width: 100%; text-align: center; }
 }
