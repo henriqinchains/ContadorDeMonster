@@ -388,14 +388,14 @@ nav {
   overflow: hidden;
   display: flex;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.2); /* Fundo sutil caso a imagem seja menor */
+  background-color: rgba(0, 0, 0, 0.2); 
 }
 
 .post-image img {
   width: 100%;
-  height: auto;          /* Permite que a altura se ajuste organicamente */
-  max-height: 650px;     /* Teto máximo seguro para fotos muito verticais */
-  object-fit: contain;   /* Garante exibição integral do arquivo enviado */
+  height: auto !important;   
+  max-height: none !important;    
+  object-fit: contain !important;
   display: block;
 }
 
@@ -423,6 +423,10 @@ nav {
   color: #e2e8f0;
   margin-bottom: 20px;
   white-space: pre-wrap;
+
+  text-align: left !important; 
+  width: 100%;                 
+  padding: 0 4px;              
 }
 
 .post-footer {
