@@ -1,7 +1,3 @@
-html.esconder-loading-instantaneo #loading-overlay {
-  display: none !important;
-}
-
 /* ==========================================================================
    1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS (THEME)
    ========================================================================== */
@@ -15,14 +11,15 @@ html.esconder-loading-instantaneo #loading-overlay {
   --text-muted: #8b9bb4;
   --border-color: #45a245;
   
-  /* Variáveis exclusivas do Modal de Vidro */
-  --bg: #0a0e27;
-  --card: #12172e;
-  --text: #f8fafc;
+  /* Variáveis do Modal de Vidro (Sincronizadas com o tema Monster) */
+  --bg-glass: rgba(18, 23, 46, 0.7);
+  --text-light: #f8fafc;
   --secondary: #cbd5e1;
-  --accent: #00ff2a;
-  --accent-strong: #00ff4c;
-  --glow: rgba(0, 82, 11, 0.15);
+  --glow: rgba(0, 255, 102, 0.15);
+}
+
+html.esconder-loading-instantaneo #loading-overlay {
+  display: none !important;
 }
 
 * {
@@ -32,7 +29,8 @@ html.esconder-loading-instantaneo #loading-overlay {
   font-family: "Segoe UI", Roboto, sans-serif;
 }
 
-h1, h2, h3, .nav-logo, .badge, .btn-registrar, .rank-posicao, .info-label, .btn-filtro {
+/* Tipografia Identidade do Projeto */
+h1, h2, h3, .nav-logo, .badge, .btn-registrar, .rank-posicao, .info-label, .btn-filtro, .btn-group .btn {
   font-family: "Nova Square", sans-serif;
   letter-spacing: 0.5px;
 }
@@ -84,6 +82,7 @@ nav {
   border-bottom: 3px solid transparent;
   text-decoration: none;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .nav-links a:hover,
@@ -103,23 +102,21 @@ nav {
   cursor: pointer;
 }
 
-#navUser .user-avatar {
+.user-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #00ff66;
+  background-color: var(--monster-green);
   box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Nova Square", sans-serif;
   font-size: 0.9rem;
   font-weight: bold;
   color: #1a1a1a;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  cursor: pointer;
   transition: all 0.2s ease;
 }
 
@@ -154,13 +151,8 @@ nav {
   padding: 8px 0;
 }
 
-.nav-user.open .user-dropdown {
-  display: block;
-}
-
-.nav-user.open .chevron {
-  transform: rotate(180deg);
-}
+.nav-user.open .user-dropdown { display: block; }
+.nav-user.open .chevron { transform: rotate(180deg); }
 
 .dropdown-header {
   padding: 12px 16px;
@@ -195,79 +187,56 @@ nav {
   color: var(--monster-green);
 }
 
-.dropdown-sep {
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.08);
-  margin: 6px 0;
-}
-
-.dropdown-item.danger {
-  color: #ff4d4d;
-}
-
+.dropdown-item.danger { color: #ff4d4d; }
 .dropdown-item.danger:hover {
   background-color: rgba(255, 77, 77, 0.1);
   color: #ff6666;
 }
 
 /* ==========================================================================
-   3. ESTRUTURA DE GRID DA PÁGINA REFEITA
+   3. MESH DE LAYOUT EM 3 COLUNAS (ESTILO X / TWITTER DINÂMICO)
    ========================================================================== */
-.page {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+.layout-principal {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  /* No monitor grande, a esquerda reserva espaço para o botão comprido com texto */
+  grid-template-columns: minmax(180px, 240px) 1fr minmax(280px, 350px); 
   gap: 30px;
-}
-
-@media (max-width: 950px) {
-  .page {
-    grid-template-columns: 1fr;
-  }
-}
-
-.timeline-header {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--bg-card);
-}
-
-.timeline-header h2 {
-  font-size: 1.8rem;
-  color: #fff;
-  text-transform: uppercase;
-  align-self: flex-start;
-}
-
-/* ==========================================================================
-   ZONA DE AÇÕES: REGISTRAR + FILTROS
-   ========================================================================== */
-.timeline-actions {
-  display: flex;
+  max-width: 1300px;
+  margin: 30px auto;
+  padding: 0 20px;
+  width: 100%;
   align-items: flex-start;
-  gap: 12px;
+}
+
+/* COLUNA DA ESQUERDA: Acompanha a rolagem */
+.coluna-esquerda {
+  position: sticky;
+  top: 90px;
+  min-width: 0;
+}
+
+.timeline-actions {
   width: 100%;
 }
 
+/* O BOTÃO COMPRIDO COM TEXTO (VISUAL PADRÃO NO PC GIGANTE) */
 .timeline-actions .btn-registrar {
-  flex: 2;
-  margin: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--monster-green);
   color: var(--bg-main);
   border: none;
-  padding: 12px 24px;
+  padding: 14px 24px;
   font-size: 0.9rem;
   font-weight: bold;
   text-transform: uppercase;
-  border-radius: 4px;
+  border-radius: 50px; /* Estilo pílula do Twitter */
   cursor: pointer;
   box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .timeline-actions .btn-registrar:hover {
@@ -276,9 +245,46 @@ nav {
   transform: translateY(-2px);
 }
 
-.filtro-accordion {
-  flex: 1;
-  position: relative; /* Permite que o conteúdo flutue no Desktop */
+/* DIVISÃO 2: CENTRO (FEED PRINCIPAL CENTRALIZADO) */
+.coluna-centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 100%;
+  min-width: 0; 
+}
+
+.feed-container {
+  width: 100%;
+  max-width: 550px; 
+}
+
+/* DIVISÃO 3: DIREITA */
+.coluna-direita {
+  position: sticky;
+  top: 90px;
+  min-width: 0;
+}
+
+.coluna-direita * {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+#right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.panel, 
+.filtro-accordion,
+.filter-body input[type="text"],
+.filter-body select,
+.btn-filtro {
+  width: 100% !important; 
+  box-sizing: border-box;
 }
 
 .btn-filtro {
@@ -296,32 +302,26 @@ nav {
   font-size: 0.9rem;
   font-weight: bold;
   text-transform: uppercase;
-  list-style: none; /* Remove seta nativa */
+  list-style: none;
   transition: all 0.2s ease;
-  height: 42.5px; /* Altura exata do botão verde para alinhar perfeito */
+  height: 42.5px;
 }
 
-.btn-filtro::-webkit-details-marker {
-  display: none;
-}
+.btn-filtro::-webkit-details-marker { display: none; }
+.btn-filtro:hover { background-color: rgba(0, 255, 102, 0.1); }
 
-.btn-filtro:hover {
-  background-color: rgba(0, 255, 102, 0.1);
-}
-
-/* A gaveta que abre com os filtros */
 .filtro-conteudo {
-  position: absolute; /* No Desktop, ele flutua sobre as latas */
+  position: absolute;
   top: 100%;
   right: 0;
-  width: 350px;
+  width: 100%; 
+  max-width: 350px;
   background-color: var(--bg-darker);
   border: 1px solid rgba(69, 162, 158, 0.4);
   border-radius: 8px;
   padding: 20px;
   margin-top: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-  animation: deslizarFiltro 0.2s ease-out;
   z-index: 100;
 }
 
@@ -331,19 +331,12 @@ nav {
 }
 
 /* ==========================================================================
-   4. TIMELINE (CARDS DE REVIEWS)
+   4. FEED E CARDS DE AVALIAÇÃO (POSTS)
    ========================================================================== */
 .feed-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
-}
-
-.feed-container > p {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 40px 0;
-  font-size: 1.1rem;
 }
 
 .post-card {
@@ -353,11 +346,12 @@ nav {
   padding: 24px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   transition: border-color 0.2s, transform 0.2s;
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto 15px auto;
 }
 
-.post-card:hover {
-  border-color: var(--border-color);
-}
+.post-card:hover { border-color: var(--border-color); }
 
 .post-head {
   display: flex;
@@ -389,44 +383,25 @@ nav {
   gap: 2px;
 }
 
-.post-meta strong {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.post-meta span {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.post-options {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 50%;
-  transition: background 0.2s, color 0.2s;
-}
-
-.post-options:hover {
-  background-color: rgba(31, 134, 0, 0.05);
-  color: #fff;
-}
+.post-meta strong { color: #fff; font-size: 1rem; }
+.post-meta span { font-size: 0.8rem; color: var(--text-muted); }
 
 .post-image {
-  background-color: var(--bg-darker);
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  width: 100%;
+  margin: 15px 0;
+  border-radius: 8px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
 }
 
 .post-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 0.3s ease;
 }
 
 .post-info {
@@ -439,43 +414,13 @@ nav {
   margin-bottom: 16px;
 }
 
-@media (max-width: 500px) {
-  .post-info { grid-template-columns: 1fr; }
-}
+.info-item { display: flex; flex-direction: column; gap: 4px; }
+.info-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+.info-value { color: #fff; font-weight: 600; font-size: 0.95rem; }
 
-.info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.info-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.info-value {
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.nota-stars {
-  color: #ffb800;
-  margin-left: 4px;
-  letter-spacing: 1px;
-}
-
-.valeu-sim {
-  color: var(--monster-green);
-  font-weight: bold;
-}
-
-.valeu-nao {
-  color: #ff4d4d;
-  font-weight: bold;
-}
+.nota-stars { color: #ffb800; margin-left: 4px; letter-spacing: 1px; }
+.valeu-sim { color: var(--monster-green); font-weight: bold; }
+.valeu-nao { color: #ff4d4d; font-weight: bold; }
 
 .post-desc {
   font-size: 0.95rem;
@@ -505,25 +450,15 @@ nav {
   border-radius: 4px;
 }
 
-.post-action svg {
-  width: 18px;
-  height: 18px;
-}
-
+.post-action svg { width: 18px; height: 18px; }
 .post-action:hover {
   color: #ff4d5a;
   background-color: rgba(255, 77, 90, 0.08);
 }
 
 /* ==========================================================================
-   5. COLUNA DIREITA (LIDERANÇA & REGRAS DO FILTRO INTERNO)
+   5. COMPONENTES DE PLACAR DA DIREITA
    ========================================================================== */
-.right-col {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
 .panel {
   background-color: var(--bg-card);
   border: 1px solid rgba(69, 162, 158, 0.2);
@@ -541,11 +476,7 @@ nav {
   padding-bottom: 12px;
 }
 
-.panel-header h3 {
-  color: #fff;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-}
+.panel-header h3 { color: #fff; font-size: 1.2rem; text-transform: uppercase; }
 
 .badge {
   background-color: rgba(255, 77, 77, 0.15);
@@ -560,16 +491,11 @@ nav {
 }
 
 @keyframes pulse {
-  0% { opacity: 0.7; }
+  0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
-  100% { opacity: 0.7; }
 }
 
-.panel-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.panel-body { display: flex; flex-direction: column; gap: 8px; }
 
 .ranking-item {
   display: flex;
@@ -580,28 +506,12 @@ nav {
   border-radius: 6px;
   border-left: 3px solid transparent;
   transition: transform 0.15s ease;
+  min-width: 0;
 }
 
-.ranking-item:hover {
-  transform: translateX(4px);
-}
-
-.rank-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.rank-posicao {
-  font-weight: bold;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-}
-
-.rank-nome {
-  font-weight: 600;
-  color: #fff;
-}
+.ranking-item:hover { transform: translateX(4px); }
+.rank-info { display: flex; align-items: center; gap: 12px; }
+.rank-nome { font-weight: 600; color: #fff; }
 
 .rank-latinhas {
   font-weight: bold;
@@ -610,149 +520,19 @@ nav {
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;          
+  white-space: nowrap;  
+  flex-shrink: 0;     
 }
 
-.ranking-item.rank-1 {
-  border-left-color: #ffd700;
-  background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, var(--bg-darker) 100%);
-}
+.ranking-item.rank-1 { border-left-color: #ffd700; background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, var(--bg-darker) 100%); }
 .ranking-item.rank-1 .rank-posicao { color: #ffd700; }
-
-.ranking-item.rank-2 {
-  border-left-color: #c0c0c0;
-  background: linear-gradient(90deg, rgba(192, 192, 192, 0.05) 0%, var(--bg-darker) 100%);
-}
+.ranking-item.rank-2 { border-left-color: #c0c0c0; background: linear-gradient(90deg, rgba(192, 192, 192, 0.05) 0%, var(--bg-darker) 100%); }
 .ranking-item.rank-2 .rank-posicao { color: #c0c0c0; }
-
-.ranking-item.rank-3 {
-  border-left-color: #cd7f32;
-  background: linear-gradient(90deg, rgba(205, 127, 50, 0.05) 0%, var(--bg-darker) 100%);
-}
+.ranking-item.rank-3 { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205, 127, 50, 0.05) 0%, var(--bg-darker) 100%); }
 .ranking-item.rank-3 .rank-posicao { color: #cd7f32; }
-
-/* REGRAS INTERNAS DOS FILTROS (Agora dentro do Accordion) */
-.filter-body {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.field label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.filter-body input[type="text"],
-.filter-body input[type="number"],
-.filter-body select,
-.filter-body input[type="date"] {
-  background-color: var(--bg-card);
-  border: 1px solid rgba(69, 162, 158, 0.4);
-  color: #fff;
-  padding: 10px 12px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  outline: none;
-  width: 100%;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.filter-body input[type="text"]:focus,
-.filter-body input[type="number"]:focus,
-.filter-body select:focus,
-.filter-body input[type="date"]:focus {
-  border-color: var(--monster-green);
-  box-shadow: 0 0 8px rgba(0, 255, 102, 0.2);
-}
-
-.tag-group {
-  display: flex;
-  gap: 8px;
-}
-
-.tag {
-  background-color: var(--bg-card);
-  border: 1px solid rgba(69, 162, 158, 0.4);
-  color: var(--text-main);
-  padding: 6px 14px;
-  font-size: 0.85rem;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.tag:hover {
-  border-color: var(--monster-green);
-  color: var(--monster-green);
-}
-
-.tag.active {
-  background-color: rgba(0, 255, 102, 0.12);
-  border-color: var(--monster-green);
-  color: var(--monster-green);
-  font-weight: bold;
-  box-shadow: 0 0 8px rgba(0, 255, 102, 0.2);
-}
-
-.btn-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-  width: 100%;
-}
-
-.btn-group .btn {
-  flex: 1;
-  padding: 12px;
-  font-family: "Nova Square", sans-serif;
-  font-size: 0.85rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-group .btn-primary {
-  background-color: var(--monster-green);
-  color: var(--bg-main);
-  border: none;
-  box-shadow: 0 0 12px rgba(0, 255, 102, 0.2);
-}
-
-.btn-group .btn-primary:hover {
-  background-color: var(--monster-hover);
-  box-shadow: 0 0 20px rgba(0, 255, 102, 0.5);
-  transform: translateY(-2px);
-}
-
-.btn-group .btn-ghost {
-  background-color: transparent;
-  color: var(--text-muted);
-  border: 1px solid rgba(69, 162, 158, 0.4);
-}
-
-.btn-group .btn-ghost:hover {
-  border-color: #ff4d4d;
-  color: #ff4d4d;
-  background-color: rgba(255, 77, 77, 0.05);
-  transform: translateY(-2px);
-}
-
-.select-wrap {
-  position: relative;
-  width: 100%;
-}
 
 /* ==========================================================================
    6. MODAL FLUTUANTE (DESIGN GLASSMORPHISM DO INDEX)
@@ -772,18 +552,15 @@ nav {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .modal-card {
   width: min(920px, 95%);
   max-height: 90vh; 
   overflow-y: auto;
-  background: rgba(18, 23, 46, 0.7);
+  background: var(--bg-glass);
   backdrop-filter: blur(20px);
-  border: 2px solid var(--accent);
+  border: 2px solid var(--monster-green);
   border-radius: 32px;
   padding: 40px;
   position: relative;
@@ -791,14 +568,10 @@ nav {
   animation: slideIn 0.5s ease-out;
 }
 
-.modal-card::-webkit-scrollbar { width: 8px; }
-.modal-card::-webkit-scrollbar-track { background: transparent; }
-.modal-card::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.modal-card::-webkit-scrollbar { width: 8px; }
+.modal-card::-webkit-scrollbar-thumb { background: var(--monster-green); border-radius: 10px; }
 
 .close-button {
   position: absolute;
@@ -814,69 +587,35 @@ nav {
   z-index: 10;
 }
 
-.close-button:hover {
-  color: var(--accent-strong);
-  transform: scale(1.2) rotate(90deg);
-}
+.close-button:hover { color: var(--monster-hover); transform: scale(1.2) rotate(90deg); }
 
 .modal-card h2 {
   margin: 0 0 8px;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 50%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--monster-green) 0%, var(--monster-hover) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 800;
 }
 
-.modal-card h2 span {
-  color: var(--text); 
-  -webkit-text-fill-color: var(--text);
-}
+.modal-card h2 span { color: var(--text-light); -webkit-text-fill-color: var(--text-light); }
+.modal-subtitle { color: var(--secondary); font-size: 1rem; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(0, 255, 42, 0.2); }
 
-.modal-subtitle {
-  color: var(--secondary);
-  font-size: 1rem;
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(0, 255, 42, 0.2);
-}
+#formAvaliacao { display: flex; flex-direction: column; gap: 24px; }
+.grid { display: grid; gap: 24px; }
+.grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-/* ==========================================================================
-   7. ELEMENTOS DO FORMULÁRIO DE CADASTRO (ISOLADOS NO MODAL)
-   ========================================================================== */
-#formAvaliacao {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.grid {
-  display: grid;
-  gap: 24px;
-}
-
-.grid-two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.modal-card label {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 0.95rem;
-  color: var(--secondary);
-  font-weight: 500;
-}
+.modal-card label { display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; color: var(--secondary); font-weight: 500; }
 
 .modal-card input, 
 .modal-card textarea, 
 .modal-card select {
   width: 100%;
   border-radius: 14px;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--monster-green);
   background: rgba(18, 23, 46, 0.6);
-  color: var(--text);
+  color: var(--text-light);
   padding: 14px 16px;
   font-size: 0.95rem;
   outline: none;
@@ -887,25 +626,17 @@ nav {
 .modal-card input:focus, 
 .modal-card textarea:focus, 
 .modal-card select:focus {
-  border-color: var(--accent-strong);
+  border-color: var(--monster-hover);
   box-shadow: 0 0 0 4px var(--glow), inset 0 0 10px var(--glow);
   transform: translateY(-2px);
 }
 
-.modal-card input::placeholder, 
-.modal-card textarea::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
+textarea { min-height: 120px; resize: vertical; }
 
 .modal-card input[type="file"]::file-selector-button {
   background: var(--glow);
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  border: 1px solid var(--monster-green);
+  color: var(--monster-green);
   padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -914,29 +645,19 @@ textarea {
   transition: all 0.2s;
 }
 
-.modal-card input[type="file"]::file-selector-button:hover {
-  background: var(--accent);
-  color: #0a0e27;
-}
+.modal-card input[type="file"]::file-selector-button:hover { background: var(--monster-green); color: #0a0e27; }
 
 .radio-group {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  background: rgba(0, 217, 255, 0.05);
-  border: 2px solid var(--accent);
+  background: rgba(0, 255, 102, 0.03);
+  border: 2px solid var(--monster-green);
   border-radius: 20px;
   padding: 20px;
-  margin: 0;
 }
 
-.radio-group legend {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 12px;
-  text-transform: uppercase;
-}
+.radio-group legend { font-size: 0.95rem; font-weight: 600; color: var(--monster-green); margin-bottom: 12px; text-transform: uppercase; }
 
 .radio-group label {
   flex-direction: row !important;
@@ -948,48 +669,28 @@ textarea {
   flex: 1;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid var(--accent);
-  color: var(--text);
+  border: 2px solid var(--monster-green);
+  color: var(--text-light);
 }
 
 .radio-group input { display: none; }
 
 .radio-group label:has(input:checked) {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  background: linear-gradient(135deg, var(--monster-green) 0%, var(--monster-hover) 100%);
   color: #0a0e27;
   font-weight: bold;
   box-shadow: 0 0 20px var(--glow);
   transform: translateY(-2px);
 }
 
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  border-top: 2px solid rgba(0, 255, 42, 0.2);
-  padding-top: 24px;
-  margin-top: 8px;
-}
-
-.hint {
-  background: var(--glow);
-  border: 2px dashed var(--accent);
-  border-radius: 16px;
-  padding: 16px 20px;
-  color: var(--secondary);
-  font-size: 0.95rem;
-  flex: 1;
-  text-align: center;
-  font-weight: bold;
-}
+.footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-top: 2px solid rgba(0, 255, 42, 0.2); padding-top: 24px; margin-top: 8px; }
+.hint { background: var(--glow); border: 2px dashed var(--monster-green); border-radius: 16px; padding: 16px 20px; color: var(--secondary); font-size: 0.95rem; flex: 1; text-align: center; font-weight: bold; }
 
 .button {
   padding: 14px 32px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  background: linear-gradient(135deg, var(--monster-green) 0%, var(--monster-hover) 100%);
   color: #0a0e27;
   font-weight: 700;
   font-size: 0.95rem;
@@ -998,32 +699,11 @@ textarea {
   box-shadow: 0 4px 15px var(--glow);
 }
 
-.button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px var(--glow);
-  filter: brightness(1.2);
-}
+.button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--glow); filter: brightness(1.2); }
 
-/* MODAL INFO */
-#btnSobre {
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #4CAF50;
-  padding: 7px 10px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-#btnSobre:hover {
-  background-color: #4CAF50;
-  color: #121212;
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-}
-
+/* ==========================================
+   7. MODAIS AUXILIARES E SPLASH SCREEN
+   ========================================== */
 .modal-oculto {
   display: none; 
   position: fixed;
@@ -1041,259 +721,154 @@ textarea {
   background-color: #121212;
   margin: 10% auto; 
   padding: 30px 20px;
-  border: 1px solid #4CAF50;
+  border: 1px solid var(--monster-green);
   border-radius: 8px;
   width: 90%;
   max-width: 450px;
   text-align: center;
-  position: relative;;
+  position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.modal-conteudo h3 {
-  color: #ffffff;
-  margin-top: 0;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+.modal-conteudo h3 { color: #ffffff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+.modal-conteudo .disclaimer, .modal-conteudo .creditos { color: #cccccc; font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px; }
+.modal-conteudo a { color: var(--monster-green); text-decoration: none; font-weight: bold; transition: all 0.3s; }
+.modal-conteudo a:hover { color: var(--monster-hover); text-shadow: 0 0 8px rgba(0, 255, 102, 0.6); }
 
-.modal-conteudo .disclaimer,
-.modal-conteudo .creditos {
-  color: #cccccc;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  margin-bottom: 15px;
-}
+.fechar-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; color: #666; font-weight: bold; cursor: pointer; }
+.fechar-btn:hover { color: #ff5252; }
 
-.modal-conteudo a {
-  color: #4CAF50;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.modal-conteudo a:hover {
-  color: #66bb6a;
-  text-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
-}
-
-.fechar-btn {
-  color: #666666;
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.fechar-btn:hover {
-  color: #ff5252;
-}
-
-/* ==========================================
-   TELA DE CARREGAMENTO (SPLASH SCREEN)
-   ========================================== */
 .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #121212;
-    z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: #121212;
+  z-index: 99999;
+  display: flex; justify-content: center; align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-.spinner-container {
-    text-align: center;
-    color: #4CAF50;
-}
+.spinner-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--monster-green); width: 100%; max-width: 300px; padding: 20px; }
+.logo-loading { width: 120px !important; max-width: 100% !important; height: auto !important; margin-bottom: 20px !important; display: block !important; }
+.monster-spinner { width: 50px; height: 50px; border: 5px solid #333333; border-top: 5px solid var(--monster-green); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+.loading-texto { font-weight: bold; letter-spacing: 1px; text-transform: uppercase; font-size: 0.9rem; color: var(--monster-green); }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.monster-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #333333;
-    border-top: 5px solid #4CAF50;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 15px auto;
-}
-
-.loading-texto {
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+.hamburguer-btn { display: none; background: none; border: none; color: var(--monster-green); cursor: pointer; padding: 5px; }
 
 /* ==========================================================================
-   8. REGRAS DE RESPONSIVIDADE MOBILE
+   8. MEDIA QUERIES (A MÁGICA DE ENCOLHIMENTO DO X / TWITTER)
    ========================================================================== */
-@media (max-width: 720px) {
-  .grid-two { grid-template-columns: 1fr; }
-  
-  /* Modal de Vidro Responsivo e Dinâmico */
-  .modal-card { 
-    width: 100%; 
-    height: 100dvh; /* Calcula o tamanho real da tela sem as barras do navegador */
-    max-height: 100dvh; 
-    border-radius: 0; 
-    border: none; 
-    padding: 24px 24px 80px 24px; /* O 80px no final garante que o botão não seja engolido */
-    overflow-y: auto; /* Deixa rolar liso se o teclado abrir */
-  }
-  
-  .footer { flex-direction: column; }
-  .button, .hint { width: 100%; text-align: center; }
-}
 
-/* ==========================================================================
-   ESCONDE O HAMBÚRGUER NO DESKTOP (PC)
-   ========================================================================== */
-.hamburguer-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--monster-green);
-  cursor: pointer;
-  padding: 5px;
-}
-
-/* ==========================================================================
-   PACOTE MOBILE UNIFICADO (ATÉ 768PX)
-   ========================================================================== */
-@media (max-width: 768px) {
-  .page {
-    display: flex;
-    flex-direction: column;
-    margin: 20px auto; 
-    padding: 0 15px;
+/* PONTO DE QUEBRA 1: Quando a tela aperta (Telas médias de PC, notebooks entre 1050px e 1200px) */
+@media (max-width: 1200px) {
+  .layout-principal {
+    /* Avisa o grid para encolher a coluna esquerda para o tamanho mínimo da bolinha */
+    grid-template-columns: max-content 1fr minmax(280px, 340px); 
     gap: 20px;
   }
 
-  .right-col {
-    display: contents;
-  }
-
-  .panel { order: 1; }
-  .timeline { order: 2; }
-
-  nav {
-    padding: 0 15px;
+  /* FORÇA O TEXTO INTERNO DO BOTÃO A SUMIR */
+  .timeline-actions .btn-registrar span,
+  .timeline-actions .btn-registrar p {
+    display: none !important;
   }
   
-  .nav-logo {
-    font-size: 1.2rem;
-    flex-grow: 1;
-    text-align: center;
+  /* TRANSFORMA A PÍLULA EM BOLINHA SÓ AQUI, QUANDO O ESPAÇO APERTOU */
+  .timeline-actions .btn-registrar {
+    width: 55px !important;   
+    height: 55px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
   }
 
-  .hamburguer-btn {
-    display: block;
-    order: -1; 
+  .timeline-actions .btn-registrar::before {
+    content: "+";
+    font-size: 2rem; /* Centraliza um "+" grande e imponente na bolinha */
+  }
+}
+
+/* PONTO DE QUEBRA 2: Quando falta muito espaço (Tablets e telas abaixo de 950px) */
+@media (max-width: 950px) {
+  .layout-principal {
+    grid-template-columns: max-content 1fr; /* Esquerda com a bolinha grudada e o centro expandido */
   }
 
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
+  /* A LIDERANÇA E FILTROS ESCORREGAM DE FORMA FLUIDA PARA BAIHO DO FEED */
+  .coluna-direita {
+    grid-column: 2;
+    order: 2; 
+    position: static; 
     width: 100%;
-    background-color: var(--bg-darker);
-    flex-direction: column;
-    padding: 0;
-    gap: 0;
-    border-bottom: 2px solid var(--monster-green);
-    box-shadow: 0 20px 30px rgba(0,0,0,0.9);
-    z-index: 9999;
+    margin-top: 25px;
   }
 
-  .nav-links.open {
-    display: flex;
-    animation: descerGaveta 0.2s ease-out;
-  }
-
-  .nav-links a {
-    width: 100%;
-    padding: 18px 20px;
-    justify-content: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    margin: 0;
-    background-color: var(--bg-card);
-  }
-
-  .nav-links a:last-child {
-    border-bottom: none !important;
-  }
-
-  @keyframes descerGaveta {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  #btnSobre {
-    display: none;
-  }
-
-  /* Ajustes do Menu de Ações (Filtro e Registrar) no Mobile */
-  .timeline-actions {
-    flex-direction: column; /* Empilha os botões no celular */
-  }
-
-  .timeline-actions .btn-registrar,
-  .filtro-accordion {
-    width: 100%;
+  .coluna-centro {
+    grid-column: 2;
+    order: 1;
   }
 
   .filtro-conteudo {
-    position: relative; /* No celular, ele empurra o feed pra baixo em vez de flutuar */
+    position: relative;
     width: 100%;
+    max-width: 100%;
+    box-shadow: none;
   }
 
   .post-card {
-    padding: 15px;
+    min-width: 0;
+    width: 100% !important;
   }
-  
-  .post-footer {
+}
+
+/* PONTO DE QUEBRA 3: Mobile Puro (Celulares abaixo de 768px) */
+@media (max-width: 768px) {
+  nav { padding: 0 15px; }
+  .nav-logo { font-size: 1.2rem; flex-grow: 1; text-align: center; }
+  .hamburguer-btn { display: block; order: -1; }
+
+  /* Menu Hamburguer de gaveta */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px; left: 0; width: 100%;
+    background-color: var(--bg-darker);
     flex-direction: column;
-    gap: 12px;
-  }
-  
-  .post-footer button {
-    width: 100%;
-    justify-content: center;
+    padding: 0; gap: 0;
+    border-bottom: 2px solid var(--monster-green);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+    z-index: 9999;
   }
 
-  .modal-card h2 {
-    font-size: 1.6rem;
-    margin-top: 20px;
+  .nav-links.open { display: flex; animation: descerGaveta 0.2s ease-out; }
+  .nav-links a { width: 100%; padding: 18px 20px; justify-content: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; background-color: var(--bg-card); }
+  .nav-links a:last-child { border-bottom: none !important; }
+
+ .coluna-esquerda {
+    position: fixed !important;
+    bottom: 30px !important;   
+    right: 30px !important;    
+    left: auto !important;     
+    top: auto !important;      
+    z-index: 9999 !important;  
   }
-  
-  .close-button {
-    top: 15px;
-    right: 20px;
-    background-color: var(--bg-darker);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+
+  .timeline-actions .btn-registrar {
+    width: 60px !important;    
+    height: 60px !important;
+    box-shadow: 0 4px 15px rgba(0, 255, 102, 0.5) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .layout-principal {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 10px;
   }
-  
-  .radio-group label {
-    flex: 1 1 100%;
-  }
+}
+
+@keyframes descerGaveta {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
