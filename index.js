@@ -422,9 +422,7 @@ function renderizarPosts(arrayAvaliacoes) {
         <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
       </div>
 
-      <div class="post-desc">
-        ${post.review || "Sem descrição."}
-      </div>
+      <div class="post-desc">${(post.review || "Sem descrição.").trim()}</div>
 
       <div class="post-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
         <button class="${classeBotao}" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao}; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; padding: 6px 12px; border-radius: 6px; transition: all 0.2s;">
@@ -630,20 +628,25 @@ async function carregarRanking() {
   } catch (erro) { container.innerHTML = "<p style='text-align: center; color: #ff3333;'>Erro ao carregar o ranking.</p>"; console.error(erro); }
 }
 
+// Inicialização segura dos elementos do modal "Sobre"
 const modal = document.getElementById("modalSobre");
 const span = document.getElementById("fecharModal");
 const btnHamSobre = document.getElementById("sobreProjetoBtnHam");
 
-btnHamSobre.onclick = function () {
-  modal.style.display = "block";
+if (btnHamSobre && modal) {
+  btnHamSobre.onclick = function () {
+    modal.style.display = "block";
+  }
 }
 
-span.onclick = function () {
-  modal.style.display = "none";
+if (span && modal) {
+  span.onclick = function () {
+    modal.style.display = "none";
+  }
 }
 
 window.onclick = function (event) {
-  if (event.target == modal) {
+  if (modal && event.target == modal) {
     modal.style.display = "none";
   }
 }
