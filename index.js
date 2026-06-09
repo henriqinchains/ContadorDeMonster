@@ -415,6 +415,8 @@ function renderizarPosts(arrayAvaliacoes) {
         <img src="${post.foto_url}" alt="Foto do Monster">
       </div>
 
+      <div class="post-desc">${(post.review || "Sem descrição.").trim()}</div>
+      
       <div class="post-info">
         <div class="info-item"><span class="info-label">Sabor</span><span class="info-value">${post.sabor}</span></div>
         <div class="info-item"><span class="info-label">Valor</span><span class="info-value">R$ ${Number(post.valor).toFixed(2).replace(".", ",")}</span></div>
@@ -422,7 +424,6 @@ function renderizarPosts(arrayAvaliacoes) {
         <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
       </div>
 
-      <div class="post-desc">${(post.review || "Sem descrição.").trim()}</div>
 
       <div class="post-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
         <button class="${classeBotao}" onclick="toggleCurtida(this, '${post._id}')" style="color: ${corTexto}; background-color: ${bgBotao}; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; padding: 6px 12px; border-radius: 6px; transition: all 0.2s;">
