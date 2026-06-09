@@ -110,19 +110,16 @@ async function verificarSessao() {
 // ==========================================
 
 function popularSelectsDeSabor() {
-  // Pega os DATALISTS que criamos no HTML
   const datalistFiltro = document.getElementById("listaSaboresFiltro");
   const datalistModal = document.getElementById("listaSaboresModal");
 
   listaSabores.forEach(sabor => {
-    // 1. Injeta no datalist do filtro
     if (datalistFiltro) {
       const optionFiltro = document.createElement("option");
       optionFiltro.value = sabor;
       datalistFiltro.appendChild(optionFiltro);
     }
 
-    // 2. Injeta no datalist do modal
     if (datalistModal) {
       const optionModal = document.createElement("option");
       optionModal.value = sabor;
@@ -157,23 +154,19 @@ async function inicializarInterface(usuario) {
   ]);
 
   renderizarPosts(todasAvaliacoes);
-
-  // Só chega nessa linha quando o feed e o ranking estiverem 100% prontos na tela.
   ocultarLoading();
 }
 
 function ocultarLoading() {
   const overlay = document.getElementById('loading-overlay');
   if (overlay) {
-    // Zera a opacidade para a transição suave
     overlay.style.opacity = '0';
 
     setTimeout(() => {
       overlay.style.visibility = 'hidden';
-      overlay.style.display = 'none'; // Garante que saiu do fluxo
+      overlay.style.display = 'none';
     }, 500);
 
-    // Grava que o usuário já viu a tela de loading hoje
     sessionStorage.setItem('jaViuLoading', 'true');
   }
 }
@@ -304,19 +297,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (btnAplicar) {
     btnAplicar.addEventListener("click", () => {
-      // Pega APENAS os 3 valores que ainda existem na tela
       const apenasMinhas = document.getElementById("checkMeusPosts").checked;
       const sabor = document.getElementById("filtroSabor").value;
       const ordem = document.getElementById("filtroOrdem").value;
 
-      // Filtra a lista
       let postsFiltrados = todasAvaliacoes.filter((post) => {
         if (apenasMinhas && post.sujeito !== loggedUser) return false;
         if (sabor && post.sabor !== sabor) return false;
         return true;
       });
 
-      // Ordena a lista
       postsFiltrados.sort((a, b) => {
         if (ordem === "recentes") return new Date(b.createdAt) - new Date(a.createdAt);
         if (ordem === "antigos") return new Date(a.createdAt) - new Date(b.createdAt);
@@ -373,7 +363,6 @@ function renderizarPosts(arrayAvaliacoes) {
   arrayAvaliacoes.forEach((post) => {
     const dataObjeto = new Date(post.createdAt);
     const dataFormatada = dataObjeto.toLocaleDateString("pt-BR");
-    // O config garante que exiba sempre com dois dígitos (ex: 09:05 em vez de 9:5)
     const horaFormatada = dataObjeto.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
     const dataEHoraFinal = `${dataFormatada} · ${horaFormatada}`;
@@ -387,13 +376,12 @@ function renderizarPosts(arrayAvaliacoes) {
     const arrayLikes = post.likes || [];
     const jaCurtiu = arrayLikes.includes(loggedUser); 
     
-    // ⚡ A MÁGICA: Adiciona a classe 'curtido' se ele já deu like
     const classeBotao = jaCurtiu ? 'post-action btn-curtir curtido' : 'post-action btn-curtir';
     
     const corIcone = jaCurtiu ? '#ff4d5a' : 'currentColor';
     const fillIcone = jaCurtiu ? '#ff4d5a' : 'none';
     const corTexto = jaCurtiu ? '#ff4d5a' : 'var(--text-muted)';
-    const bgBotao = 'transparent'; // Nasce sempre transparente
+    const bgBotao = 'transparent'; 
     const numLikes = arrayLikes.length;
 
     const postArticle = document.createElement("article");
@@ -423,30 +411,18 @@ function renderizarPosts(arrayAvaliacoes) {
         </div>
       </div>
 
-      <div class="post-image" style="width: 100%; margin: 15px 0;">
-        <img src="${post.foto_url}" alt="Foto do Monster" style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 8px; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <div class="post-image">
+        <img src="${post.foto_url}" alt="Foto do Monster">
       </div>
 
-      <div class="post-info" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+      <div class="post-info">
         <div class="info-item"><span class="info-label">Sabor</span><span class="info-value">${post.sabor}</span></div>
         <div class="info-item"><span class="info-label">Valor</span><span class="info-value">R$ ${Number(post.valor).toFixed(2).replace(".", ",")}</span></div>
         <div class="info-item"><span class="info-label">Nota</span><span class="info-value">${Number(post.nota).toFixed(1)} <span class="nota-stars">${estrelas}</span></span></div>
         <div class="info-item"><span class="info-label">Valeu a pena?</span><span class="info-value ${valeuClasse}">${valeuTexto}</span></div>
       </div>
 
-      <div class="post-desc" style="
-        font-family: 'Nova Square'; 
-        margin-bottom: 15px; 
-        color: var(--text-color); 
-        line-height: 1.4; 
-        text-indent: 0; 
-        text-align: left; 
-        white-space: pre-wrap;
-        background-color: rgba(0, 0, 0, 0.2);
-        padding: 12px 15px;
-        border-radius: 6px;
-        border-left: 3px solid #00ff66;
-      ">
+      <div class="post-desc">
         ${post.review || "Sem descrição."}
       </div>
 
@@ -478,7 +454,6 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
   const el = document.getElementById(elementId);
   if (!el) return;
 
-  // 1. Tenta pegar do sessionStorage
   const cacheSessao = sessionStorage.getItem(`cache_avatar_${usuario}`);
   if (cacheSessao) {
     if (cacheSessao !== "none_found") {
@@ -496,10 +471,7 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
     return;
   }
 
-  // 2. Tenta pegar do cache em memória
   if (cacheMemoriaAvatares[usuario]) {
-    // Se já tem um post buscando essa foto, este post não faz nada. 
-    // Ele apenas espera a primeira requisição terminar e pintar a tela.
     if (cacheMemoriaAvatares[usuario] === "buscando") return;
 
     if (cacheMemoriaAvatares[usuario] !== "none_found") {
@@ -517,9 +489,7 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
     return;
   }
 
-  // 3. Busca na API em segundo plano
   try {
-    // ⚡ Avisa os próximos posts que já estamos resolvendo isso
     cacheMemoriaAvatares[usuario] = "buscando";
 
     const url = `https://monster-reviews-api.onrender.com/api/estatisticas?user=${encodeURIComponent(usuario)}`;
@@ -527,7 +497,6 @@ async function resolverAvatarDoCardFeed(usuario, elementId) {
     const dados = await resposta.json();
     const urlFoto = dados.usuario?.avatarUrl || dados.avatarUrl;
 
-    // ⚡ FUNÇÃO INTERNA: Quando a foto chega, procura TODOS os posts desse usuário e atualiza de uma vez!
     const atualizarTodosOsAvatares = (fotoUrl) => {
       const avatares = document.querySelectorAll(`.post-avatar[data-usuario="${usuario}"]`);
       avatares.forEach(avatarEl => {
@@ -567,12 +536,10 @@ window.toggleCurtida = async function(btn, postId) {
   const span = btn.querySelector('.contador-likes');
   let count = parseInt(span.textContent);
 
-  // 1. Verifica pela CLASSE (100% à prova de falhas)
   const isCurtido = btn.classList.contains('curtido');
 
-  // 2. Atualização Otimista
   if (!isCurtido) {
-    btn.classList.add('curtido'); // Trava o botão como curtido
+    btn.classList.add('curtido'); 
     svg.style.fill = '#ff4d5a';
     svg.style.stroke = '#ff4d5a';
     btn.style.color = '#ff4d5a';
@@ -586,7 +553,7 @@ window.toggleCurtida = async function(btn, postId) {
     }, 200);
 
   } else {
-    btn.classList.remove('curtido'); // Destrava o botão
+    btn.classList.remove('curtido'); 
     svg.style.fill = 'none';
     svg.style.stroke = 'currentColor';
     btn.style.color = 'var(--text-muted)';
@@ -594,11 +561,10 @@ window.toggleCurtida = async function(btn, postId) {
     span.textContent = count - 1;
   }
 
-  // Dispara a rota do servidor
   try {
     const resposta = await fetch(`https://monster-reviews-api.onrender.com/api/avaliacoes/${postId}/curtidas`, {
       method: "POST",
-      credentials: "include" // Manda o authToken pro backend saber quem está curtindo
+      credentials: "include" 
     });
 
     if (!resposta.ok) {
@@ -608,7 +574,6 @@ window.toggleCurtida = async function(btn, postId) {
   } catch (erro) {
     console.error("❌ Erro na sincronização da curtida:", erro);
     
-    // Se a API falhar (ex: token expirado), desfaz a animação
     if (!isCurtido) {
       svg.style.fill = 'none';
       svg.style.stroke = 'currentColor';
@@ -668,17 +633,15 @@ async function carregarRanking() {
 const modal = document.getElementById("modalSobre");
 const span = document.getElementById("fecharModal");
 const btnHamSobre = document.getElementById("sobreProjetoBtnHam");
-// Quando clica no botão do Nav, abre
+
 btnHamSobre.onclick = function () {
   modal.style.display = "block";
 }
 
-// Quando clica no X, fecha
 span.onclick = function () {
   modal.style.display = "none";
 }
 
-// Se o cara clicar fora da caixinha (no fundo escuro), fecha
 window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
