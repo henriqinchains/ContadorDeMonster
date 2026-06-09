@@ -425,8 +425,10 @@ nav {
   white-space: pre-wrap;
 
   text-align: left !important; 
-  width: 100%;                 
-  padding: 0 4px;              
+  align-self: flex-start !important; 
+  justify-self: start !important; 
+  width: 100% !important;           
+  margin-left: 0 !important;        
 }
 
 .post-footer {
