@@ -398,8 +398,9 @@ nav {
 .post-image img {
   width: 100%;
   height: auto;
+  max-height: 600px;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
 }
