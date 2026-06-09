@@ -198,7 +198,6 @@ nav {
    ========================================================================== */
 .layout-principal {
   display: grid;
-  /* No monitor grande, a esquerda reserva espaço para o botão comprido com texto */
   grid-template-columns: minmax(180px, 240px) 1fr minmax(280px, auto); 
   gap: 30px;
   max-width: 1300px;
@@ -208,7 +207,6 @@ nav {
   align-items: flex-start;
 }
 
-/* COLUNA DA ESQUERDA: Acompanha a rolagem */
 .coluna-esquerda {
   position: sticky;
   top: 90px;
@@ -219,7 +217,6 @@ nav {
   width: 100%;
 }
 
-/* O BOTÃO COMPRIDO COM TEXTO (VISUAL PADRÃO NO PC GIGANTE) */
 .timeline-actions .btn-registrar {
   width: 100%;
   display: flex;
@@ -232,7 +229,7 @@ nav {
   font-size: 0.9rem;
   font-weight: bold;
   text-transform: uppercase;
-  border-radius: 50px; /* Estilo pílula do Twitter */
+  border-radius: 50px;
   cursor: pointer;
   box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
   transition: all 0.2s ease;
@@ -245,7 +242,6 @@ nav {
   transform: translateY(-2px);
 }
 
-/* DIVISÃO 2: CENTRO (FEED PRINCIPAL CENTRALIZADO) */
 .coluna-centro {
   display: flex;
   flex-direction: column;
@@ -259,7 +255,6 @@ nav {
   max-width: 550px; 
 }
 
-/* DIVISÃO 3: DIREITA */
 .coluna-direita {
   position: sticky;
   top: 90px;
@@ -331,7 +326,7 @@ nav {
 }
 
 /* ==========================================================================
-   4. FEED E CARDS DE AVALIAÇÃO (POSTS)
+   4. FEED E CARDS DE AVALIAÇÃO (POSTS) - CORRIGIDO SEM CORTE
    ========================================================================== */
 .feed-container {
   display: flex;
@@ -393,15 +388,14 @@ nav {
   overflow: hidden;
   display: flex;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.2); /* Fundo sutil caso a imagem seja menor */
 }
 
 .post-image img {
   width: 100%;
-  height: auto;
-  max-height: 600px;
-  aspect-ratio: 4 / 5;
-  object-fit: contain;
-  object-position: center;
+  height: auto;          /* Permite que a altura se ajuste organicamente */
+  max-height: 650px;     /* Teto máximo seguro para fotos muito verticais */
+  object-fit: contain;   /* Garante exibição integral do arquivo enviado */
   display: block;
 }
 
@@ -535,75 +529,8 @@ nav {
 .ranking-item.rank-3 { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205, 127, 50, 0.05) 0%, var(--bg-darker) 100%); }
 .ranking-item.rank-3 .rank-posicao { color: #cd7f32; }
 
-/* ==========================================================================
-   6. MODAL FLUTUANTE (DESIGN GLASSMORPHISM DO INDEX)
-   ========================================================================== */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(10, 14, 39, 0.85); 
-  backdrop-filter: blur(15px); 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.modal-card {
-  width: min(920px, 95%);
-  max-height: 90vh; 
-  overflow-y: auto;
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  border: 2px solid var(--monster-green);
-  border-radius: 32px;
-  padding: 40px;
-  position: relative;
-  box-shadow: 0 8px 32px var(--glow), inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 0 40px var(--glow);
-  animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-.modal-card::-webkit-scrollbar { width: 8px; }
-.modal-card::-webkit-scrollbar-thumb { background: var(--monster-green); border-radius: 10px; }
-
-.close-button {
-  position: absolute;
-  top: 24px;
-  right: 32px;
-  background: transparent;
-  border: none;
-  color: var(--secondary);
-  font-size: 36px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  line-height: 1;
-  z-index: 10;
-}
-
-.close-button:hover { color: var(--monster-hover); transform: scale(1.2) rotate(90deg); }
-
-.modal-card h2 {
-  margin: 0 0 8px;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  background: linear-gradient(135deg, var(--monster-green) 0%, var(--monster-hover) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
-}
-
-.modal-card h2 span { color: var(--text-light); -webkit-text-fill-color: var(--text-light); }
-.modal-subtitle { color: var(--secondary); font-size: 1rem; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(0, 255, 42, 0.2); }
-
-#formAvaliacao { display: flex; flex-direction: column; gap: 24px; }
+/* REGRAS INTERNAS DOS FILTROS */
+.filter-body { display: flex; flex-direction: column; gap: 16px; }
 .grid { display: grid; gap: 24px; }
 .grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
@@ -702,9 +629,9 @@ textarea { min-height: 120px; resize: vertical; }
 
 .button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--glow); filter: brightness(1.2); }
 
-/* ==========================================
+/* ==========================================================================
    7. MODAIS AUXILIARES E SPLASH SCREEN
-   ========================================== */
+   ========================================================================== */
 .modal-oculto {
   display: none; 
   position: fixed;
@@ -760,21 +687,17 @@ textarea { min-height: 120px; resize: vertical; }
    8. MEDIA QUERIES (A MÁGICA DE ENCOLHIMENTO DO X / TWITTER)
    ========================================================================== */
 
-/* PONTO DE QUEBRA 1: Quando a tela aperta (Telas médias de PC, notebooks entre 1050px e 1200px) */
 @media (max-width: 1200px) {
   .layout-principal {
-    /* Avisa o grid para encolher a coluna esquerda para o tamanho mínimo da bolinha */
     grid-template-columns: max-content 1fr minmax(280px, 340px); 
     gap: 20px;
   }
 
-  /* FORÇA O TEXTO INTERNO DO BOTÃO A SUMIR */
   .timeline-actions .btn-registrar span,
   .timeline-actions .btn-registrar p {
     display: none !important;
   }
   
-  /* TRANSFORMA A PÍLULA EM BOLINHA SÓ AQUI, QUANDO O ESPAÇO APERTOU */
   .timeline-actions .btn-registrar {
     width: 55px !important;   
     height: 55px !important;
@@ -784,17 +707,15 @@ textarea { min-height: 120px; resize: vertical; }
 
   .timeline-actions .btn-registrar::before {
     content: "+";
-    font-size: 2rem; /* Centraliza um "+" grande e imponente na bolinha */
+    font-size: 2rem;
   }
 }
 
-/* PONTO DE QUEBRA 2: Quando falta muito espaço (Tablets e telas abaixo de 950px) */
 @media (max-width: 950px) {
   .layout-principal {
-    grid-template-columns: max-content 1fr; /* Esquerda com a bolinha grudada e o centro expandido */
+    grid-template-columns: max-content 1fr; 
   }
 
-  /* A LIDERANÇA E FILTROS ESCORREGAM DE FORMA FLUIDA PARA BAIHO DO FEED */
   .coluna-direita {
     grid-column: 2;
     order: 2; 
@@ -821,13 +742,11 @@ textarea { min-height: 120px; resize: vertical; }
   }
 }
 
-/* PONTO DE QUEBRA 3: Mobile Puro (Celulares abaixo de 768px) */
 @media (max-width: 768px) {
   nav { padding: 0 15px; }
   .nav-logo { font-size: 1.2rem; flex-grow: 1; text-align: center; }
   .hamburguer-btn { display: block; order: -1; }
 
-  /* Menu Hamburguer de gaveta */
   .nav-links {
     display: none;
     position: absolute;
